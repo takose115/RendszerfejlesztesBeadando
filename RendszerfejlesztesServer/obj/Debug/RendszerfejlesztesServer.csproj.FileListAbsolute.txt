@@ -1,0 +1,12 @@
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\bin\Debug\RendszerfejlesztesServer.exe.config
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\bin\Debug\RendszerfejlesztesServer.exe
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\bin\Debug\RendszerfejlesztesServer.pdb
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\bin\Debug\SimpleTCP.dll
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.csprojAssemblyReference.cache
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.Server.resources
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.Properties.Resources.resources
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.csproj.GenerateResource.cache
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.csproj.CoreCompileInputs.cache
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.csproj.CopyComplete
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.exe
+C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.pdb

@@ -1,0 +1,11 @@
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\bin\Debug\SimpleTCP.dll
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Login.resources
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\obj\Debug\Client.csproj.GenerateResource.cache
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\obj\Debug\Client.csproj.CoreCompileInputs.cache
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\obj\Debug\Client.csproj.CopyComplete
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+C:\Users\takose\source\repos\RendszerfejlesztesServer\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
