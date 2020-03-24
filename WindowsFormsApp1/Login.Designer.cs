@@ -28,101 +28,88 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnConnect = new System.Windows.Forms.Button();
-            this.txtTest = new System.Windows.Forms.TextBox();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.txtTest2 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnClass = new System.Windows.Forms.Button();
+            this.bntLogin = new System.Windows.Forms.Button();
+            this.btnRegister = new System.Windows.Forms.Button();
+            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // btnConnect
+            // bntLogin
             // 
-            this.btnConnect.Location = new System.Drawing.Point(383, 34);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(75, 23);
-            this.btnConnect.TabIndex = 0;
-            this.btnConnect.Text = "Connect";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.bntLogin.Location = new System.Drawing.Point(171, 160);
+            this.bntLogin.Name = "bntLogin";
+            this.bntLogin.Size = new System.Drawing.Size(75, 23);
+            this.bntLogin.TabIndex = 0;
+            this.bntLogin.Text = "Login";
+            this.bntLogin.UseVisualStyleBackColor = true;
+            this.bntLogin.Click += new System.EventHandler(this.bntLogin_Click);
             // 
-            // txtTest
+            // btnRegister
             // 
-            this.txtTest.Location = new System.Drawing.Point(195, 35);
-            this.txtTest.Name = "txtTest";
-            this.txtTest.Size = new System.Drawing.Size(171, 20);
-            this.txtTest.TabIndex = 1;
+            this.btnRegister.Location = new System.Drawing.Point(90, 160);
+            this.btnRegister.Name = "btnRegister";
+            this.btnRegister.Size = new System.Drawing.Size(75, 23);
+            this.btnRegister.TabIndex = 1;
+            this.btnRegister.Text = "Register";
+            this.btnRegister.UseVisualStyleBackColor = true;
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
-            // btnSend
+            // txtUsername
             // 
-            this.btnSend.Location = new System.Drawing.Point(494, 33);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
-            this.btnSend.TabIndex = 2;
-            this.btnSend.Text = "Send";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            this.txtUsername.Location = new System.Drawing.Point(90, 78);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(156, 20);
+            this.txtUsername.TabIndex = 2;
             // 
-            // txtTest2
+            // txtPassword
             // 
-            this.txtTest2.Location = new System.Drawing.Point(214, 111);
-            this.txtTest2.Multiline = true;
-            this.txtTest2.Name = "txtTest2";
-            this.txtTest2.Size = new System.Drawing.Size(244, 186);
-            this.txtTest2.TabIndex = 3;
+            this.txtPassword.Location = new System.Drawing.Point(90, 119);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(156, 20);
+            this.txtPassword.TabIndex = 3;
             // 
-            // label1
+            // label4
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(138, 41);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "TEst";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(29, 81);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(58, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Username:";
             // 
-            // label2
+            // label5
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "label2";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(31, 122);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(56, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Password:";
             // 
-            // label3
+            // label6
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(161, 117);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(34, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Test2";
-            // 
-            // btnClass
-            // 
-            this.btnClass.Location = new System.Drawing.Point(561, 134);
-            this.btnClass.Name = "btnClass";
-            this.btnClass.Size = new System.Drawing.Size(128, 23);
-            this.btnClass.TabIndex = 7;
-            this.btnClass.Text = "Kérek egy classt";
-            this.btnClass.UseVisualStyleBackColor = true;
-            this.btnClass.Click += new System.EventHandler(this.btnClass_Click);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(142, 43);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(33, 13);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Login";
             // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnClass);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtTest2);
-            this.Controls.Add(this.btnSend);
-            this.Controls.Add(this.txtTest);
-            this.Controls.Add(this.btnConnect);
+            this.ClientSize = new System.Drawing.Size(329, 257);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtPassword);
+            this.Controls.Add(this.txtUsername);
+            this.Controls.Add(this.btnRegister);
+            this.Controls.Add(this.bntLogin);
             this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
@@ -133,15 +120,13 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnConnect;
-        private System.Windows.Forms.TextBox txtTest;
-        private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.TextBox txtTest2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btnClass;
+        private System.Windows.Forms.Button bntLogin;
+        private System.Windows.Forms.Button btnRegister;
+        private System.Windows.Forms.TextBox txtUsername;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }
 

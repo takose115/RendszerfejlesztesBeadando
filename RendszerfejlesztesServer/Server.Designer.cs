@@ -36,6 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnTest = new System.Windows.Forms.Button();
+            this.hibaLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtHost
@@ -109,11 +110,21 @@
             this.btnTest.Text = "Teszt";
             this.btnTest.UseVisualStyleBackColor = true;
             // 
+            // hibaLabel
+            // 
+            this.hibaLabel.AutoSize = true;
+            this.hibaLabel.Location = new System.Drawing.Point(271, 333);
+            this.hibaLabel.Name = "hibaLabel";
+            this.hibaLabel.Size = new System.Drawing.Size(35, 13);
+            this.hibaLabel.TabIndex = 8;
+            this.hibaLabel.Text = "label3";
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.hibaLabel);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -124,6 +135,7 @@
             this.Controls.Add(this.txtHost);
             this.Name = "Server";
             this.Text = "Server";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Server_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -140,6 +152,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Label hibaLabel;
     }
 }
 

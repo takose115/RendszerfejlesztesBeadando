@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -14,28 +15,15 @@ using System.Xml.Serialization;
 namespace RendszerfejlesztesServer
 {
     public partial class Server : Form
-    {
-
-        //teszt rész
-        public class TestClass
-        {
-            public int szam { get; set; }
-            public string szoveg { get; set; }
-            public bool idk { get; set; }
-        }
-        public static string Serialize(object AnObject)
-        {
-            XmlSerializer Xml_Serializer = new XmlSerializer(AnObject.GetType());
-            StringWriter Writer = new StringWriter();
-
-            Xml_Serializer.Serialize(Writer, AnObject);
-            return Writer.ToString();
-        }
-
-        // teszt rész vége
+    {        
+        static db adatb = new db();
+        SQLiteDataReader reader;
+        SQLiteCommand cmd;
         public Server()
         {
             InitializeComponent();
+            adatb.openConnection();
+            cmd = new SQLiteCommand(adatb.GetConnection());
         }
         SimpleTcpServer server;
 
@@ -48,6 +36,55 @@ namespace RendszerfejlesztesServer
 
         private void Server_DataReceived(object sender, SimpleTCP.Message e)
         {
+            string temp2 = e.MessageString;
+            string uzenet= e.MessageString.Substring(0, e.MessageString.Length - 1);
+            string command = uzenet.Substring(0, uzenet.IndexOf(" "));
+            switch(command)
+            {
+                //login username,password
+                case "login":
+                    {
+                        string username = uzenet.Substring(uzenet.IndexOf(" ")+1, uzenet.IndexOf(",")-uzenet.IndexOf(" ")-1);
+                        string password = uzenet.Substring(uzenet.IndexOf(",")+1);
+
+                        cmd = new SQLiteCommand("Select COUNT(id) from Users where username='"+username+"' and password='"+password+"'", adatb.GetConnection());
+                        reader = cmd.ExecuteReader();
+                        reader.Read();
+                        if (reader.GetInt32(0) > 0)
+                            e.ReplyLine("login true");
+                        else
+                            e.ReplyLine("login false");
+                        reader.Close();
+                        break;
+                    }
+                //register username,password1,email
+                case "register":
+                    {
+                        string[] temp = (uzenet.Substring(uzenet.IndexOf(" ")+1)).Split(',');
+                        string username = temp[0];
+                        string password = temp[1];
+                        string email = temp[2];
+                        try
+                        {
+                            cmd.CommandText = "INSERT INTO Users(username, password, permission, premium, email) VALUES('" + username + "','" + password + "', 1, 1,'" + email + "')";
+                            int a = cmd.ExecuteNonQuery();
+                            if (a == 0)
+                                e.ReplyLine("register false");
+                            else
+                                e.ReplyLine("register true");
+                        }catch(Exception ex)
+                        {
+                            hibaLabel.Text = ex.ToString();
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+         }
+            /*
             txtStatus.Invoke((MethodInvoker)delegate ()
                 {
                     txtStatus.Text += e.MessageString;
@@ -59,7 +96,19 @@ namespace RendszerfejlesztesServer
                     XML = Serialize(teszt);
                     e.ReplyLine(string.Format(XML));
                 });
-        }
+            
+            txtTest2.Invoke((MethodInvoker)delegate ()
+            {
+                TestClass teszt = new TestClass();
+                string valasz = e.MessageString;
+                txtTest.Text = valasz;
+                valasz = valasz.Substring(0, valasz.Length-1);
+                teszt = DeSerialize(valasz, typeof(TestClass)) as TestClass;
+                txtTest2.Text += teszt.szam.ToString() + "    " + teszt.szoveg + "     " + teszt.idk.ToString();
+            });
+
+              */
+        
 
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -76,6 +125,14 @@ namespace RendszerfejlesztesServer
                 txtStatus.Text += "server stopped\n";
             }
         }
-        
+
+        private void Server_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            adatb.closeConnection();
+            if (server.IsStarted)
+            {
+                server.Stop();
+            }
+        }
     }
 }
