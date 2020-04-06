@@ -25,7 +25,6 @@ namespace WindowsFormsApp1
             client.DataReceived += Client_DataReceived;
             System.Net.IPAddress ip = System.Net.IPAddress.Parse(ipaddress);
             client.Connect(ipaddress, Convert.ToInt32(port));
-            //hello
         }
         SimpleTcpClient client;
         //txtUsername txtPassword1 txtPassword2 txtEmail
@@ -56,20 +55,21 @@ namespace WindowsFormsApp1
                 string eredmeny = valasz.Substring(valasz.IndexOf(" ")+1);
                 if (eredmeny == "true")
                 {     
-                    MessageBox.Show("register successfulllllll");
-                    Login f1 = new Login();
-                    client.Disconnect();
-                    client.Dispose();
-                    this.Invoke((MethodInvoker)delegate
-                    {
-                        this.Close();
-                    });
-                    Application.Run(f1);
+                    MessageBox.Show("register successful");
                 }
                 else
                     MessageBox.Show("register failed :(");
             }
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Login f1 = new Login();
+            client.Disconnect();
+            client.Dispose();
+            this.Hide();
+            f1.Show();
         }
     }
 }

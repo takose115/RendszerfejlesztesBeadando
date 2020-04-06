@@ -16,6 +16,7 @@ namespace RendszerfejlesztesServer
 {
     public partial class Server : Form
     {        
+        //important: datareceived function runs on a different thread, cannot reach any ui element without invoking, keep in mind when creating new forms and navigating between them
         static db adatb = new db();
         SQLiteDataReader reader;
         SQLiteCommand cmd;
@@ -44,38 +45,69 @@ namespace RendszerfejlesztesServer
                 //login username,password
                 case "login":
                     {
-                        string username = uzenet.Substring(uzenet.IndexOf(" ")+1, uzenet.IndexOf(",")-uzenet.IndexOf(" ")-1);
-                        string password = uzenet.Substring(uzenet.IndexOf(",")+1);
-
-                        cmd = new SQLiteCommand("Select COUNT(id) from Users where username='"+username+"' and password='"+password+"'", adatb.GetConnection());
-                        reader = cmd.ExecuteReader();
-                        reader.Read();
-                        if (reader.GetInt32(0) > 0)
-                            e.ReplyLine("login true");
-                        else
-                            e.ReplyLine("login false");
-                        reader.Close();
+                        txtStatus.Invoke((MethodInvoker)delegate()
+                        {
+                            string username = uzenet.Substring(uzenet.IndexOf(" ") + 1, uzenet.IndexOf(",") - uzenet.IndexOf(" ") - 1);
+                            string password = uzenet.Substring(uzenet.IndexOf(",") + 1);
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(username + " login try");
+                            txtStatus.AppendText(Environment.NewLine);
+                            cmd = new SQLiteCommand("Select COUNT(id) from Users where username='" + username + "' and password='" + password + "'", adatb.GetConnection());
+                            reader = cmd.ExecuteReader();
+                            reader.Read();
+                            if (reader.GetInt32(0) > 0)
+                            {
+                                int id;
+                                reader.Close();
+                                cmd = new SQLiteCommand("Select id from Users where username='" + username + "' and password='" + password + "'", adatb.GetConnection());
+                                reader = cmd.ExecuteReader();
+                                reader.Read();
+                                id = reader.GetInt32(0);
+                                e.ReplyLine("login true,"+id);
+                                txtStatus.AppendText("login succesfull "+id);
+                            }
+                            else
+                            {
+                                e.ReplyLine("login false");
+                                txtStatus.AppendText("login failed");
+                            }
+                            reader.Close();
+                        });
                         break;
                     }
                 //register username,password1,email
+                //TODO: ne lehessen regelni olyannal ami már van
                 case "register":
                     {
-                        string[] temp = (uzenet.Substring(uzenet.IndexOf(" ")+1)).Split(',');
-                        string username = temp[0];
-                        string password = temp[1];
-                        string email = temp[2];
-                        try
+                        txtStatus.Invoke((MethodInvoker)delegate ()
                         {
-                            cmd.CommandText = "INSERT INTO Users(username, password, permission, premium, email) VALUES('" + username + "','" + password + "', 1, 1,'" + email + "')";
-                            int a = cmd.ExecuteNonQuery();
-                            if (a == 0)
-                                e.ReplyLine("register false");
-                            else
-                                e.ReplyLine("register true");
-                        }catch(Exception ex)
-                        {
-                            hibaLabel.Text = ex.ToString();
-                        }
+                            string[] temp = (uzenet.Substring(uzenet.IndexOf(" ") + 1)).Split(',');
+                            string username = temp[0];
+                            string password = temp[1];
+                            string email = temp[2];
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText("register try: " + username + " " + email);
+                            txtStatus.AppendText(Environment.NewLine);
+                            try
+                            {
+                                cmd.CommandText = "INSERT INTO Users(username, password, permission, premium, email) VALUES('" + username + "','" + password + "', 1, 1,'" + email + "')";
+                                int a = cmd.ExecuteNonQuery();
+                                if (a == 0)
+                                {
+                                    e.ReplyLine("register false");
+                                    txtStatus.AppendText("register failed");
+                                }
+                                else
+                                {
+                                    e.ReplyLine("register true");
+                                    txtStatus.AppendText("register succesfull");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                hibaLabel.Text = ex.ToString();
+                            }
+                        });
                         break;
                     }
                 default:
@@ -122,7 +154,8 @@ namespace RendszerfejlesztesServer
             if (server.IsStarted)
             {
                 server.Stop();
-                txtStatus.Text += "server stopped\n";
+                txtStatus.AppendText(Environment.NewLine);
+                txtStatus.Text += "server stopped";
             }
         }
 

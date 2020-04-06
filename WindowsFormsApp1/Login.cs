@@ -17,6 +17,8 @@ using System.Web.Script.Serialization;
 namespace WindowsFormsApp1
 {
     //txtUsername txtPassword
+
+    
     public partial class Login : Form
     {        
         public Login()
@@ -27,15 +29,27 @@ namespace WindowsFormsApp1
         string port = "8910";
 
         SimpleTcpClient client;
-        
+        bool connected = false;
 
         private void Login_Load(object sender, EventArgs e)
         {
-            client = new SimpleTcpClient();
-            client.StringEncoder = Encoding.UTF8;
-            client.DataReceived += Client_DataReceived;
-            System.Net.IPAddress ip = System.Net.IPAddress.Parse(ipaddress);
-            client.Connect(ipaddress, Convert.ToInt32(port));
+            while(!connected)
+            {
+                try
+                {
+                    client = new SimpleTcpClient();
+                    client.StringEncoder = Encoding.UTF8;
+                    client.DataReceived += Client_DataReceived;
+                    System.Net.IPAddress ip = System.Net.IPAddress.Parse(ipaddress);
+                    client.Connect(ipaddress, Convert.ToInt32(port));
+                    connected = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Connection failed, try again!");
+                }
+            }
+            
         }        
         //client.WriteLineAndGetReply(txtTest.Text, TimeSpan.FromSeconds(3));
         private void Client_DataReceived(object sender, SimpleTCP.Message e)
@@ -44,15 +58,24 @@ namespace WindowsFormsApp1
             string command = valasz.Substring(0, valasz.IndexOf(" "));
             if(command=="login")
             {
-                string eredmeny = valasz.Substring(valasz.IndexOf(" ")+1);
-                if(eredmeny=="true")
-                    MessageBox.Show("login successfulllllll");
+                string eredmeny = valasz.Substring(valasz.IndexOf(" ")+1,4);
+                if (eredmeny == "true")
+                {
+                    int id = int.Parse(valasz.Substring(valasz.IndexOf(",")+1));
+                    MessageBox.Show("login successful");
+                    Invoke(new MethodInvoker(delegate ()
+                    {
+                        Index f1 = new Index(client,id);
+                        this.Hide();
+                        f1.Show();
+                    }));
+                }
                 else
-                    MessageBox.Show("login failed :(");
+                    MessageBox.Show("login failed");
             }
             
         }
-
+        
         //szervernek küldeni a felhasználónevet, jelszót
         //txtUsername txtPassword
 
@@ -75,12 +98,12 @@ namespace WindowsFormsApp1
             client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));            
         }
 
+
         private void btnRegister_Click(object sender, EventArgs e)
         {
             Register f1 = new Register(client);
             this.Hide();
             client.Disconnect();
-            //f1.FormClosed+=(s, args) => this.Close();
             f1.Show();
         }
         
