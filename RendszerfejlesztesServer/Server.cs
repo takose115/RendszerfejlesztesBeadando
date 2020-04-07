@@ -1,4 +1,5 @@
-﻿using SimpleTCP;
+﻿using Json.Net;
+using SimpleTCP;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -110,6 +111,43 @@ namespace RendszerfejlesztesServer
                         });
                         break;
                     }
+                case "itemload": 
+                    {                        
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(command);
+                            txtStatus.AppendText(Environment.NewLine);
+                            try
+                            {
+                                List<Item> itemList = new List<Item>();
+
+                                cmd = new SQLiteCommand("Select * from Items ", adatb.GetConnection());                                
+                                reader = cmd.ExecuteReader();
+                                while(reader.Read())
+                                {
+                                    itemList.Add(new Item(
+                                        reader.GetInt32(0),
+                                        reader.GetInt32(1),
+                                        reader.GetString(2),
+                                        reader.GetInt32(3),
+                                        reader.GetInt32(4),
+                                        reader.GetString(5),
+                                        reader.GetInt32(6)
+                                        ));
+                                }
+                                var stringjson = JsonNet.Serialize(itemList);
+                                txtStatus.AppendText(stringjson);
+                                e.ReplyLine("itemload " + stringjson);
+                                reader.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                hibaLabel.Text = ex.ToString();
+                            }
+                        });
+                        break;
+                    }
                 default:
                     {
                         break;
@@ -166,6 +204,27 @@ namespace RendszerfejlesztesServer
             {
                 server.Stop();
             }
+        }
+    }
+
+    public class Item
+    {
+        public int id;
+        public int sellerid;
+        public string name;
+        public int buyout;
+        public int staringBid;
+        public string endDate;
+        public int type;
+        public Item(int id, int sellerid, string name, int buyout, int staringBid, string endDate, int type)
+        {
+            this.id = id;
+            this.sellerid = sellerid;
+            this.name = name;
+            this.buyout = buyout;
+            this.staringBid = staringBid;
+            this.endDate = endDate;
+            this.type = type;
         }
     }
 }
