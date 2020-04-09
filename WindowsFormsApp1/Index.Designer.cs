@@ -31,6 +31,8 @@
             this.SignOutBtn = new System.Windows.Forms.Button();
             this.AddItemBtn = new System.Windows.Forms.Button();
             this.listview_items = new System.Windows.Forms.ListView();
+            this.SearchTextBox = new System.Windows.Forms.TextBox();
+            this.SearchButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SignOutBtn
@@ -62,17 +64,37 @@
             this.listview_items.TabIndex = 2;
             this.listview_items.UseCompatibleStateImageBehavior = false;
             // 
+            // SearchTextBox
+            // 
+            this.SearchTextBox.Location = new System.Drawing.Point(668, 195);
+            this.SearchTextBox.Name = "SearchTextBox";
+            this.SearchTextBox.Size = new System.Drawing.Size(100, 20);
+            this.SearchTextBox.TabIndex = 3;
+            // 
+            // SearchButton
+            // 
+            this.SearchButton.Location = new System.Drawing.Point(668, 222);
+            this.SearchButton.Name = "SearchButton";
+            this.SearchButton.Size = new System.Drawing.Size(75, 23);
+            this.SearchButton.TabIndex = 4;
+            this.SearchButton.Text = "Search";
+            this.SearchButton.UseVisualStyleBackColor = true;
+            this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
+            // 
             // Index
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.SearchButton);
+            this.Controls.Add(this.SearchTextBox);
             this.Controls.Add(this.listview_items);
             this.Controls.Add(this.AddItemBtn);
             this.Controls.Add(this.SignOutBtn);
             this.Name = "Index";
             this.Text = "Index";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -81,5 +103,7 @@
         private System.Windows.Forms.Button SignOutBtn;
         private System.Windows.Forms.Button AddItemBtn;
         private System.Windows.Forms.ListView listview_items;
+        private System.Windows.Forms.TextBox SearchTextBox;
+        private System.Windows.Forms.Button SearchButton;
     }
 }

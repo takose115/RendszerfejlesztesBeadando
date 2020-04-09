@@ -148,6 +148,46 @@ namespace RendszerfejlesztesServer
                         });
                         break;
                     }
+                case "search":
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(uzenet);
+                            txtStatus.AppendText(Environment.NewLine);
+                            try
+                            {
+                                List<Item> itemList = new List<Item>();
+
+                                string keyword = uzenet.Substring(uzenet.IndexOf(" ") + 1);
+
+                                cmd = new SQLiteCommand("Select * from Items where name LIKE '%"+ keyword + "%'", adatb.GetConnection());
+                                reader = cmd.ExecuteReader();
+                                while (reader.Read())
+                                {
+                                    itemList.Add(new Item(
+                                        reader.GetInt32(0),
+                                        reader.GetInt32(1),
+                                        reader.GetString(2),
+                                        reader.GetInt32(3),
+                                        reader.GetInt32(4),
+                                        reader.GetString(5),
+                                        reader.GetInt32(6)
+                                        ));
+                                }
+                                var stringjson = JsonNet.Serialize(itemList);
+                                txtStatus.AppendText(stringjson);
+                                txtStatus.AppendText(keyword);
+                                e.ReplyLine("itemload " + stringjson);
+                                reader.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                hibaLabel.Text = ex.ToString();
+                            }
+                        });
+                        break;
+                    }
                 default:
                     {
                         break;

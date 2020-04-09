@@ -36,15 +36,18 @@ namespace WindowsFormsApp1
         int clientid;        
         private void Client_DataReceived(object sender, SimpleTCP.Message e)
         {
+           
             string valasz = e.MessageString.Substring(0, e.MessageString.Length - 1);
             string command = valasz.Substring(0, valasz.IndexOf(" "));
             if (command == "itemload")
             {
+                
                 List<Item> itemlist = new List<Item>();
                 string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1);
                 itemlist = JsonNet.Deserialize<List<Item>>(eredmeny);
                 Invoke(new MethodInvoker(delegate ()
-                {                    
+                {
+                    listview_items.Items.Clear();
                     foreach (Item it in itemlist)
                     {
                         ListViewItem lvi = new ListViewItem(new[] {
@@ -99,6 +102,13 @@ namespace WindowsFormsApp1
         private void LoadItem_Request()
         {
             string uzenet = "itemload ";
+            client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
+        }
+
+        private void SearchButton_Click(object sender, EventArgs e)
+        {
+            string keyword = SearchTextBox.Text.ToString();
+            string uzenet = "search " + keyword;
             client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
         }
 
