@@ -122,22 +122,21 @@ namespace RendszerfejlesztesServer
                             {
                                 List<Item> itemList = new List<Item>();
 
-                                cmd = new SQLiteCommand("Select * from Items ", adatb.GetConnection());                                
+                                cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, Bids.value FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id", adatb.GetConnection());                                
                                 reader = cmd.ExecuteReader();
-                                while(reader.Read())
-                                {
+                                while (reader.Read())
+                                {                                    
                                     itemList.Add(new Item(
-                                        reader.GetInt32(0),
-                                        reader.GetInt32(1),
+                                        "",
+                                        reader.GetString(0),
+                                        reader.GetString(1),
                                         reader.GetString(2),
                                         reader.GetInt32(3),
-                                        reader.GetInt32(4),
-                                        reader.GetString(5),
-                                        reader.GetInt32(6)
+                                        reader.GetString(4),
+                                        reader.GetInt32(5)
                                         ));
                                 }
                                 var stringjson = JsonNet.Serialize(itemList);
-                                txtStatus.AppendText(stringjson);
                                 e.ReplyLine("itemload " + stringjson);
                                 reader.Close();
                             }
@@ -161,22 +160,21 @@ namespace RendszerfejlesztesServer
 
                                 string keyword = uzenet.Substring(uzenet.IndexOf(" ") + 1);
 
-                                cmd = new SQLiteCommand("Select * from Items where name LIKE '%"+ keyword + "%'", adatb.GetConnection());
+                                cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, Bids.value FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%'", adatb.GetConnection());
                                 reader = cmd.ExecuteReader();
                                 while (reader.Read())
                                 {
                                     itemList.Add(new Item(
-                                        reader.GetInt32(0),
-                                        reader.GetInt32(1),
+                                        "",
+                                        reader.GetString(0),
+                                        reader.GetString(1),
                                         reader.GetString(2),
                                         reader.GetInt32(3),
-                                        reader.GetInt32(4),
-                                        reader.GetString(5),
-                                        reader.GetInt32(6)
+                                        reader.GetString(4),
+                                        reader.GetInt32(5)
                                         ));
                                 }
                                 var stringjson = JsonNet.Serialize(itemList);
-                                txtStatus.AppendText(stringjson);
                                 txtStatus.AppendText(keyword);
                                 e.ReplyLine("itemload " + stringjson);
                                 reader.Close();
@@ -250,21 +248,27 @@ namespace RendszerfejlesztesServer
     public class Item
     {
         public int id;
-        public int sellerid;
-        public string name;
-        public int buyout;
-        public int staringBid;
-        public string endDate;
+        public int sellerid;        
+        public int staringBid;        
         public int type;
-        public Item(int id, int sellerid, string name, int buyout, int staringBid, string endDate, int type)
+
+        public string image;
+        public string name;
+        public string typeName;
+        public string seller_name;
+        public int buyout;
+        public string endDate;
+        public int current_bid;
+
+        public Item(string image, string name, string typeName, string seller_name, int buyout, string endDate, int current_bid)
         {
-            this.id = id;
-            this.sellerid = sellerid;
+            this.image = image;
             this.name = name;
+            this.typeName = typeName;
+            this.seller_name = seller_name;
             this.buyout = buyout;
-            this.staringBid = staringBid;
             this.endDate = endDate;
-            this.type = type;
+            this.current_bid = current_bid;
         }
     }
 }

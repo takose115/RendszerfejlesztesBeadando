@@ -13,20 +13,47 @@ using System.Windows.Forms;
 namespace WindowsFormsApp1
 {
     public partial class Index : Form
-    {//main page basically
+    {//main page basically  
+        
+        public void PlaceBid(object sender, EventArgs e)
+        {                                                
+            string buttonName = ((Button)sender).Name;
+            string row = buttonName.Substring(7);
+            Control ctr = panel.GetControlFromPosition(7, int.Parse(row)-1);
+            MessageBox.Show(ctr.Text);
+        }
+
+        private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements)
+        {            
+            if (panel.ColumnCount != rowElements.Length)
+                throw new Exception("Elements number doesn't match!");
+            panel.RowCount++;
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            for (int i = 0; i < rowElements.Length; i++)
+            {
+                if(i==rowElements.Length-2)
+                {
+                    TextBox tx = new TextBox();
+                    tx.Name = "bidtxt_" + panel.RowCount; 
+                    panel.Controls.Add(tx, i, panel.RowCount - 1);
+                }
+                else if(i==rowElements.Length-1)
+                {
+                    Button bn = new Button();
+                    bn.Text = "Place bid";
+                    bn.Name = "bidbtn_" + panel.RowCount;
+                    bn.Click += new EventHandler(PlaceBid);
+                    panel.Controls.Add(bn, i, panel.RowCount - 1);
+                }
+                else
+                {
+                    panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                }                
+            }
+        }
         public Index(SimpleTcpClient clientm, int id)
         {
             InitializeComponent();
-            listview_items.View = View.Details;
-            listview_items.Columns.Add("id");
-            listview_items.Columns.Add("sellerid");
-            listview_items.Columns.Add("name");
-            listview_items.Columns.Add("buyout");
-            listview_items.Columns.Add("starting_bid");
-            listview_items.Columns.Add("end_date");
-            listview_items.Columns.Add("type");
-            
-
             client = clientm;
             clientid = id;
             client.DataReceived += Client_DataReceived;
@@ -41,96 +68,93 @@ namespace WindowsFormsApp1
             string command = valasz.Substring(0, valasz.IndexOf(" "));
             if (command == "itemload")
             {
-                
                 List<Item> itemlist = new List<Item>();
                 string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1);
-                itemlist = JsonNet.Deserialize<List<Item>>(eredmeny);
+                itemlist = JsonNet.Deserialize<List<Item>>(eredmeny);                
                 Invoke(new MethodInvoker(delegate ()
                 {
-                    listview_items.Items.Clear();
+                    for (int i = panel.Controls.Count - 1; i >= 1; --i)
+                            panel.Controls[i].Dispose();
+                    panel.Controls.Clear();
+                    panel.RowCount = 1;
+                    string[] rowElements = { "Image", "Item name", "Item type", "Seller name", "Buyout price", "End date", "Current bid", "Add bid", "" };
+                    if (panel.ColumnCount != rowElements.Length)
+                        throw new Exception("Elements number doesn't match!");
+                    for (int i = 0; i < rowElements.Length; i++)
+                    {
+                        panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                    }
                     foreach (Item it in itemlist)
                     {
-                        ListViewItem lvi = new ListViewItem(new[] {
-                            it.id.ToString(),
-                            it.sellerid.ToString(),
-                            it.name.ToString(),
-                            it.buyout.ToString(),
-                            it.staringBid.ToString(),
-                            it.endDate.ToString(),
-                            it.type.ToString()
-                        });
-                        listview_items.Items.Add(lvi);
-                    }
+                        string[] row = {
+                                it.image, //image
+                                it.name, //name
+                                it.typeName, //type
+                                it.seller_name, //seller_name	
+                                it.buyout.ToString(), //buyout	
+                                it.endDate, //end_date	
+                                it.current_bid.ToString(), //current_bid
+                                "",
+                                "",
+                        };                        
+                        AddRowToPanel(panel, row);
+                    }                    
                 }));
-
-                 
-
-                /*if (eredmeny == "true")
-                {
-                    int id = int.Parse(valasz.Substring(valasz.IndexOf(",") + 1));
-                    MessageBox.Show("login successful");
-                    Invoke(new MethodInvoker(delegate ()
-                    {
-                        Index f1 = new Index(client, id);
-                        this.Hide();
-                        f1.Show();
-                    }));
-                }
-                else
-                    MessageBox.Show("login failed");*/
             }
-
         }
 
-        private void SignOutBtn_Click(object sender, EventArgs e)
-        {
-            client.Disconnect();
-            client.Dispose();
-            Login f1 = new Login();
-            this.Hide();
-            f1.Show();
-        }
-
-        private void AddItemBtn_Click(object sender, EventArgs e)
-        {
-            AddItem f1 = new AddItem(client, clientid);
-            this.Hide();
-            f1.Show();
-        }
-
-
-        private void LoadItem_Request()
-        {
-            string uzenet = "itemload ";
-            client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
-        }
-
-        private void SearchButton_Click(object sender, EventArgs e)
-        {
-            string keyword = SearchTextBox.Text.ToString();
-            string uzenet = "search " + keyword;
-            client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
-        }
-
+    private void SignOutBtn_Click(object sender, EventArgs e)
+    {
+        client.Disconnect();
+        client.Dispose();
+        Login f1 = new Login();
+        this.Hide();
     }
+
+    private void AddItemBtn_Click(object sender, EventArgs e)
+    {
+        AddItem f1 = new AddItem(client, clientid);
+        this.Hide();
+    }
+
+
+    private void LoadItem_Request()
+    {
+        string uzenet = "itemload ";
+        client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
+    }
+
+    private void SearchButton_Click(object sender, EventArgs e)
+    {
+        string keyword = SearchTextBox.Text.ToString();
+        string uzenet = "search " + keyword;
+        client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
+    }
+}
     public class Item
     {
         public int id;
         public int sellerid;
-        public string name;
-        public int buyout;
         public int staringBid;
-        public string endDate;
         public int type;
-        public Item(int id, int sellerid, string name, int buyout, int staringBid, string endDate, int type)
+
+        public string image;
+        public string name;
+        public string typeName;
+        public string seller_name;
+        public int buyout;
+        public string endDate;
+        public int current_bid;
+
+        public Item(string image, string name, string typeName, string seller_name, int buyout, string endDate, int current_bid)
         {
-            this.id = id;
-            this.sellerid = sellerid;
+            this.image = image;
             this.name = name;
+            this.typeName = typeName;
+            this.seller_name = seller_name;
             this.buyout = buyout;
-            this.staringBid = staringBid;
             this.endDate = endDate;
-            this.type = type;
+            this.current_bid = current_bid;
         }
         public Item() { }
     }
