@@ -115,6 +115,7 @@ namespace WindowsFormsApp1
     {
         AddItem f1 = new AddItem(client, clientid);
         this.Hide();
+        f1.Show();
     }
 
 

@@ -113,8 +113,6 @@ C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\b
 C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\bin\Debug\System.Data.SQLite.dll
 C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\bin\Debug\System.Data.SQLite.xml
 C:\Users\takose\source\repos\RendszerfejlesztesServer\RendszerfejlesztesServer\bin\Debug\System.Data.SQLite.dll.config
-C:\Users\takose\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\bin\Debug\x86\sqlite3.dll
-C:\Users\takose\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\bin\Debug\x64\sqlite3.dll
 C:\Users\takose\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\bin\Debug\RendszerfejlesztesServer.exe.config
 C:\Users\takose\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\bin\Debug\RendszerfejlesztesServer.exe
 C:\Users\takose\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\bin\Debug\RendszerfejlesztesServer.pdb

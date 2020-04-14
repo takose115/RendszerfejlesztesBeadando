@@ -186,12 +186,52 @@ namespace RendszerfejlesztesServer
                         });
                         break;
                     }
-                default:
+                case "newItem":
                     {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText("newItem");
+                            txtStatus.AppendText(Environment.NewLine);
+                            string eredmeny = uzenet.Substring(uzenet.IndexOf(" ") + 1);
+                            NewItem newItem =JsonNet.Deserialize<NewItem>(eredmeny);
+                            txtStatus.AppendText(newItem.clientid + ", " + newItem.name + ", " + newItem.buyoutPrice + ", " + newItem.startingBid + ", " + newItem.endDate + ", " + newItem.type);
+                            txtStatus.AppendText(Environment.NewLine);
+                            cmd.CommandText = "insert into ITEMS(sellerID,name,buyout,starting_bid,end_date,type) VALUES ("+newItem.clientid+",'"+newItem.name+"',"+newItem.buyoutPrice+","+newItem.startingBid+",'"+newItem.endDate+"',"+newItem.type+")";
+                            int a = cmd.ExecuteNonQuery();
+                            if (a == 0)
+                            {
+                                e.ReplyLine("newItem false");
+                                txtStatus.AppendText("newItem failed");
+                            }
+                            else
+                            {
+                                e.ReplyLine("newItem true");
+                                txtStatus.AppendText("newItem succesfull");
+                            }
+                            cmd = new SQLiteCommand("select id from items order by id desc limit 1", adatb.GetConnection());
+                            reader = cmd.ExecuteReader();
+                            reader.Read();
+                            int itemid = reader.GetInt32(0);
+                            reader.Close();
+                            cmd.CommandText = "insert into Bids(itemID,userID,value) VALUES (" + itemid + "," + newItem.clientid + "," + newItem.startingBid + ")";
+                            cmd.ExecuteNonQuery();
+                        });
                         break;
                     }
+                default:
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText("unrecognized command: " + command);
+                        });
+                        break;
+                    }
+                
             }
          }
+        //todo : sajátra ne lehessen bidelni
             /*
             txtStatus.Invoke((MethodInvoker)delegate ()
                 {
@@ -270,5 +310,27 @@ namespace RendszerfejlesztesServer
             this.endDate = endDate;
             this.current_bid = current_bid;
         }
+    }
+
+    public class NewItem
+    {
+
+        public int clientid;
+        public string name;
+        public int buyoutPrice;
+        public int startingBid;
+        public string endDate;
+        public int type;
+        public NewItem(int cid, string na, int bp, int sb, string ed, int ty)
+        {
+            clientid = cid;
+            name = na;
+            buyoutPrice = bp;
+            startingBid = sb;
+            endDate = ed;
+            type = ty;
+        }
+        public NewItem() { }
+
     }
 }
