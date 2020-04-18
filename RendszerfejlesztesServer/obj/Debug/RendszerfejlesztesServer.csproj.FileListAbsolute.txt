@@ -454,3 +454,5 @@ C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesSer
 C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.csproj.CopyComplete
 C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.exe
 C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\obj\Debug\RendszerfejlesztesServer.pdb
+C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\bin\Debug\x86\sqlite3.dll
+C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\RendszerfejlesztesServer\bin\Debug\x64\sqlite3.dll

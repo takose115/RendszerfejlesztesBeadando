@@ -122,7 +122,8 @@ namespace RendszerfejlesztesServer
                             {
                                 List<Item> itemList = new List<Item>();
 
-                                cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, Bids.value FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id", adatb.GetConnection());                                
+                                cmd = new SQLiteCommand("" +
+                                "SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id GROUP BY items.id", adatb.GetConnection());                                
                                 reader = cmd.ExecuteReader();
                                 while (reader.Read())
                                 {                                    
@@ -133,7 +134,8 @@ namespace RendszerfejlesztesServer
                                         reader.GetString(2),
                                         reader.GetInt32(3),
                                         reader.GetString(4),
-                                        reader.GetInt32(5)
+                                        reader.GetInt32(5),
+                                        reader.GetInt32(6)
                                         ));
                                 }
                                 var stringjson = JsonNet.Serialize(itemList);
@@ -160,7 +162,7 @@ namespace RendszerfejlesztesServer
 
                                 string keyword = uzenet.Substring(uzenet.IndexOf(" ") + 1);
 
-                                cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, Bids.value FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%'", adatb.GetConnection());
+                                cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%' GROUP BY items.id", adatb.GetConnection());
                                 reader = cmd.ExecuteReader();
                                 while (reader.Read())
                                 {
@@ -171,7 +173,8 @@ namespace RendszerfejlesztesServer
                                         reader.GetString(2),
                                         reader.GetInt32(3),
                                         reader.GetString(4),
-                                        reader.GetInt32(5)
+                                        reader.GetInt32(5),
+                                        reader.GetInt32(6)
                                         ));
                                 }
                                 var stringjson = JsonNet.Serialize(itemList);
@@ -218,6 +221,25 @@ namespace RendszerfejlesztesServer
                             cmd.ExecuteNonQuery();
                         });
                         break;
+                    }
+                case "placebid":
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(uzenet);
+                            txtStatus.AppendText(Environment.NewLine);
+                            /*string id = uzenet.Substring(uzenet.IndexOf(" ") + 1, uzenet.IndexOf(",") - uzenet.IndexOf(" ") - 1);
+                            string value = uzenet.Substring(uzenet.IndexOf(",") + 1);*/
+                            string[] parameters = uzenet.Substring(uzenet.IndexOf(" ") + 1).Split(',');
+
+                            string query = "insert into Bids(itemID,userID,value) VALUES (" + parameters[0] + "," + parameters[2] + "," + parameters[1] + ")";
+                            /*string query = "UPDATE Items SET starting_bid="+ parameters[1] + " WHERE Items.id="+parameters[0];*/
+                            cmd.CommandText = query;
+                            cmd.ExecuteNonQuery();
+                            e.ReplyLine("placebid ");
+                        });
+                            break;
                     }
                 default:
                     {
@@ -300,7 +322,9 @@ namespace RendszerfejlesztesServer
         public string endDate;
         public int current_bid;
 
-        public Item(string image, string name, string typeName, string seller_name, int buyout, string endDate, int current_bid)
+        public int sql_id;
+
+        public Item(string image, string name, string typeName, string seller_name, int buyout, string endDate, int current_bid, int sql_id)
         {
             this.image = image;
             this.name = name;
@@ -309,6 +333,7 @@ namespace RendszerfejlesztesServer
             this.buyout = buyout;
             this.endDate = endDate;
             this.current_bid = current_bid;
+            this.sql_id = sql_id;
         }
     }
 

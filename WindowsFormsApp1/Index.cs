@@ -20,10 +20,13 @@ namespace WindowsFormsApp1
             string buttonName = ((Button)sender).Name;
             string row = buttonName.Substring(7);
             Control ctr = panel.GetControlFromPosition(7, int.Parse(row)-1);
-            MessageBox.Show(ctr.Text);
+            
+            int sqlid = int.Parse(ctr.Name.Substring(7));
+            string uzenet = "placebid " + sqlid + "," + ctr.Text + "," +clientid;
+            client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
         }
 
-        private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements)
+        private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements, int sql_id)
         {            
             if (panel.ColumnCount != rowElements.Length)
                 throw new Exception("Elements number doesn't match!");
@@ -34,7 +37,7 @@ namespace WindowsFormsApp1
                 if(i==rowElements.Length-2)
                 {
                     TextBox tx = new TextBox();
-                    tx.Name = "bidtxt_" + panel.RowCount; 
+                    tx.Name = "bidtxt_" + sql_id; 
                     panel.Controls.Add(tx, i, panel.RowCount - 1);
                 }
                 else if(i==rowElements.Length-1)
@@ -97,9 +100,14 @@ namespace WindowsFormsApp1
                                 "",
                                 "",
                         };                        
-                        AddRowToPanel(panel, row);
+                        AddRowToPanel(panel, row,it.sql_id);
                     }                    
                 }));
+            }
+            else if(command == "placebid")
+            {
+                LoadItem_Request();
+                MessageBox.Show("Bid is placed");
             }
         }
 
@@ -147,7 +155,9 @@ namespace WindowsFormsApp1
         public string endDate;
         public int current_bid;
 
-        public Item(string image, string name, string typeName, string seller_name, int buyout, string endDate, int current_bid)
+        public int sql_id;
+
+        public Item(string image, string name, string typeName, string seller_name, int buyout, string endDate, int current_bid, int sql_id)
         {
             this.image = image;
             this.name = name;
@@ -156,6 +166,7 @@ namespace WindowsFormsApp1
             this.buyout = buyout;
             this.endDate = endDate;
             this.current_bid = current_bid;
+            this.sql_id = sql_id;
         }
         public Item() { }
     }
