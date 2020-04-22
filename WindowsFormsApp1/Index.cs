@@ -126,8 +126,10 @@ namespace WindowsFormsApp1
         f1.Show();
     }
 
+        
 
-    private void LoadItem_Request()
+
+        private void LoadItem_Request()
     {
         string uzenet = "itemload ";
         client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
@@ -139,7 +141,14 @@ namespace WindowsFormsApp1
         string uzenet = "search " + keyword;
         client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
     }
-}
+
+        private void but_forum_Click(object sender, EventArgs e)
+        {
+            forum f1 = new forum(client, clientid);
+            this.Hide();
+            f1.Show();
+        }
+    }
     public class Item
     {
         public int id;

@@ -78,6 +78,18 @@
     <Compile Include="AddItem.Designer.cs">
       <DependentUpon>AddItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddTopic.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddTopic.Designer.cs">
+      <DependentUpon>AddTopic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forum.Designer.cs">
+      <DependentUpon>forum.cs</DependentUpon>
+    </Compile>
     <Compile Include="Index.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +112,12 @@
     </Compile>
     <EmbeddedResource Include="AddItem.resx">
       <DependentUpon>AddItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddTopic.resx">
+      <DependentUpon>AddTopic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forum.resx">
+      <DependentUpon>forum.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Index.resx">
       <DependentUpon>Index.cs</DependentUpon>

@@ -222,6 +222,34 @@ namespace RendszerfejlesztesServer
                         });
                         break;
                     }
+
+                case "newTopic":
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText("newTopic");
+                            txtStatus.AppendText(Environment.NewLine);
+                            string eredmeny = uzenet.Substring(uzenet.IndexOf(" ") + 1);
+                            NewTopic newTopic = JsonNet.Deserialize<NewTopic>(eredmeny);
+                            txtStatus.AppendText(newTopic.clientid + ", " + newTopic.title + ", " + newTopic.desc + ", " + newTopic.date);
+                            txtStatus.AppendText(Environment.NewLine);
+                            cmd.CommandText = "insert into FORUM(title,description,userID,date) VALUES ('" + newTopic.title + "','" + newTopic.desc + "'," + newTopic.clientid + ",'"+ newTopic.date + "')";
+                            int a = cmd.ExecuteNonQuery();
+                            if (a == 0)
+                            {
+                                e.ReplyLine("newTopic false");
+                                txtStatus.AppendText("newTopic failed");
+                            }
+                            else
+                            {
+                                e.ReplyLine("newTopic true");
+                                txtStatus.AppendText("newTopic succesfull");
+                            }
+                            
+                        });
+                        break;
+                    }
                 case "placebid":
                     {
                         txtStatus.Invoke((MethodInvoker)delegate ()
@@ -356,6 +384,26 @@ namespace RendszerfejlesztesServer
             type = ty;
         }
         public NewItem() { }
+
+    }
+
+    public class NewTopic
+    {
+
+        public int clientid;
+        public string title;
+        public string desc;
+        public string date;
+
+        public NewTopic(int cid, string t, string d, string dat)
+        {
+            clientid = cid;
+            title = t;
+            desc = d;
+            date = dat;
+           
+        }
+        public NewTopic() { }
 
     }
 }
