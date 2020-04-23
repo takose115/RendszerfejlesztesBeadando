@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,6 +78,13 @@ namespace WindowsFormsApp1
                     bn.Click += new EventHandler(Buyout);
                     panel.Controls.Add(bn, i, panel.RowCount - 1);
                 }
+                else if(i==0)
+                {
+                    PictureBox pb = new PictureBox();
+                    pb.Image = Image.FromFile(rowElements[i]);
+                    pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                    panel.Controls.Add(pb, i, panel.RowCount - 1);
+                }
                 else
                 {
                     panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
@@ -135,7 +143,7 @@ namespace WindowsFormsApp1
     private void SignOutBtn_Click(object sender, EventArgs e)
     {
         client.Disconnect();
-        client.Dispose();
+            client.Dispose();
         Login f1 = new Login();
         this.Hide();
     }

@@ -123,22 +123,25 @@ namespace RendszerfejlesztesServer
                                 List<Item> itemList = new List<Item>();
 
                                 cmd = new SQLiteCommand("" +
-                                "SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where state=0 GROUP BY items.id", adatb.GetConnection());                                
+                                "SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where state=0 GROUP BY items.id", adatb.GetConnection());                                
                                 reader = cmd.ExecuteReader();
+                                Image img;
+                                img = Image.FromFile("..//..//img//testkep.jpg");
                                 while (reader.Read())
                                 {                                    
                                     itemList.Add(new Item(
-                                        "",
-                                        reader.GetString(0),
-                                        reader.GetString(1),
-                                        reader.GetString(2),
-                                        reader.GetInt32(3),
-                                        reader.GetString(4),
-                                        reader.GetInt32(5),
-                                        reader.GetInt32(6)
+                                        reader.GetString(0), //item.image 
+                                        reader.GetString(1), //item.name                                       
+                                        reader.GetString(2), //type.name
+                                        reader.GetString(3), //user.username
+                                        reader.GetInt32(4), //item.buyout
+                                        reader.GetString(5), //item.end_date
+                                        reader.GetInt32(6), //bids.value
+                                        reader.GetInt32(7) //item.id
                                         ));
                                 }
                                 var stringjson = JsonNet.Serialize(itemList);
+                                txtStatus.AppendText(stringjson);
                                 e.ReplyLine("itemload " + stringjson);
                                 reader.Close();
                             }
@@ -164,7 +167,7 @@ namespace RendszerfejlesztesServer
 
                                 cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%' and state=0 GROUP BY items.id", adatb.GetConnection());
                                 reader = cmd.ExecuteReader();
-                                while (reader.Read())
+                                /*while (reader.Read())
                                 {
                                     itemList.Add(new Item(
                                         "",
@@ -176,7 +179,7 @@ namespace RendszerfejlesztesServer
                                         reader.GetInt32(5),
                                         reader.GetInt32(6)
                                         ));
-                                }
+                                }*/
                                 var stringjson = JsonNet.Serialize(itemList);
                                 txtStatus.AppendText(keyword);
                                 e.ReplyLine("itemload " + stringjson);
@@ -361,7 +364,7 @@ namespace RendszerfejlesztesServer
         public int staringBid;        
         public int type;
 
-        public string image;
+       public string image;
         public string name;
         public string typeName;
         public string seller_name;
@@ -370,6 +373,7 @@ namespace RendszerfejlesztesServer
         public int current_bid;
 
         public int sql_id;
+        
 
         public Item(string image, string name, string typeName, string seller_name, int buyout, string endDate, int current_bid, int sql_id)
         {
