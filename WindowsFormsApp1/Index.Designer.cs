@@ -38,10 +38,9 @@
             // 
             // SignOutBtn
             // 
-            this.SignOutBtn.Location = new System.Drawing.Point(1474, 82);
-            this.SignOutBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.SignOutBtn.Location = new System.Drawing.Point(983, 53);
             this.SignOutBtn.Name = "SignOutBtn";
-            this.SignOutBtn.Size = new System.Drawing.Size(112, 35);
+            this.SignOutBtn.Size = new System.Drawing.Size(75, 23);
             this.SignOutBtn.TabIndex = 0;
             this.SignOutBtn.Text = "Sign out";
             this.SignOutBtn.UseVisualStyleBackColor = true;
@@ -49,10 +48,9 @@
             // 
             // AddItemBtn
             // 
-            this.AddItemBtn.Location = new System.Drawing.Point(1474, 147);
-            this.AddItemBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AddItemBtn.Location = new System.Drawing.Point(983, 96);
             this.AddItemBtn.Name = "AddItemBtn";
-            this.AddItemBtn.Size = new System.Drawing.Size(112, 35);
+            this.AddItemBtn.Size = new System.Drawing.Size(75, 23);
             this.AddItemBtn.TabIndex = 1;
             this.AddItemBtn.Text = "Add Item";
             this.AddItemBtn.UseVisualStyleBackColor = true;
@@ -60,18 +58,16 @@
             // 
             // SearchTextBox
             // 
-            this.SearchTextBox.Location = new System.Drawing.Point(1461, 308);
-            this.SearchTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.SearchTextBox.Location = new System.Drawing.Point(974, 200);
             this.SearchTextBox.Name = "SearchTextBox";
-            this.SearchTextBox.Size = new System.Drawing.Size(137, 26);
+            this.SearchTextBox.Size = new System.Drawing.Size(93, 20);
             this.SearchTextBox.TabIndex = 3;
             // 
             // SearchButton
             // 
-            this.SearchButton.Location = new System.Drawing.Point(1474, 360);
-            this.SearchButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.SearchButton.Location = new System.Drawing.Point(983, 234);
             this.SearchButton.Name = "SearchButton";
-            this.SearchButton.Size = new System.Drawing.Size(112, 35);
+            this.SearchButton.Size = new System.Drawing.Size(75, 23);
             this.SearchButton.TabIndex = 4;
             this.SearchButton.Text = "Search";
             this.SearchButton.UseVisualStyleBackColor = true;
@@ -80,29 +76,31 @@
             // panel
             // 
             this.panel.AutoScroll = true;
-            this.panel.ColumnCount = 9;
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.panel.Location = new System.Drawing.Point(54, 82);
-            this.panel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 5);
+            this.panel.ColumnCount = 10;
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.85254F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.009011F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.090913F));
+            this.panel.Location = new System.Drawing.Point(36, 53);
+            this.panel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.panel.Name = "panel";
             this.panel.RowCount = 1;
             this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.panel.Size = new System.Drawing.Size(1341, 798);
+            this.panel.Size = new System.Drawing.Size(885, 519);
             this.panel.TabIndex = 0;
             // 
             // but_forum
             // 
-            this.but_forum.Location = new System.Drawing.Point(1474, 212);
+            this.but_forum.Location = new System.Drawing.Point(983, 138);
+            this.but_forum.Margin = new System.Windows.Forms.Padding(2);
             this.but_forum.Name = "but_forum";
-            this.but_forum.Size = new System.Drawing.Size(112, 34);
+            this.but_forum.Size = new System.Drawing.Size(75, 22);
             this.but_forum.TabIndex = 5;
             this.but_forum.Text = "Forum";
             this.but_forum.UseVisualStyleBackColor = true;
@@ -110,16 +108,15 @@
             // 
             // Index
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1652, 948);
+            this.ClientSize = new System.Drawing.Size(1101, 616);
             this.Controls.Add(this.but_forum);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.SearchButton);
             this.Controls.Add(this.SearchTextBox);
             this.Controls.Add(this.AddItemBtn);
             this.Controls.Add(this.SignOutBtn);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Index";
             this.Text = "Index";
             this.ResumeLayout(false);

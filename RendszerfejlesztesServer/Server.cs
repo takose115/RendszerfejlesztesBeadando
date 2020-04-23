@@ -123,7 +123,7 @@ namespace RendszerfejlesztesServer
                                 List<Item> itemList = new List<Item>();
 
                                 cmd = new SQLiteCommand("" +
-                                "SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id GROUP BY items.id", adatb.GetConnection());                                
+                                "SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where state=0 GROUP BY items.id", adatb.GetConnection());                                
                                 reader = cmd.ExecuteReader();
                                 while (reader.Read())
                                 {                                    
@@ -162,7 +162,7 @@ namespace RendszerfejlesztesServer
 
                                 string keyword = uzenet.Substring(uzenet.IndexOf(" ") + 1);
 
-                                cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%' GROUP BY items.id", adatb.GetConnection());
+                                cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%' and state=0 GROUP BY items.id", adatb.GetConnection());
                                 reader = cmd.ExecuteReader();
                                 while (reader.Read())
                                 {
@@ -200,7 +200,7 @@ namespace RendszerfejlesztesServer
                             NewItem newItem =JsonNet.Deserialize<NewItem>(eredmeny);
                             txtStatus.AppendText(newItem.clientid + ", " + newItem.name + ", " + newItem.buyoutPrice + ", " + newItem.startingBid + ", " + newItem.endDate + ", " + newItem.type);
                             txtStatus.AppendText(Environment.NewLine);
-                            cmd.CommandText = "insert into ITEMS(sellerID,name,buyout,starting_bid,end_date,type) VALUES ("+newItem.clientid+",'"+newItem.name+"',"+newItem.buyoutPrice+","+newItem.startingBid+",'"+newItem.endDate+"',"+newItem.type+")";
+                            cmd.CommandText = "insert into ITEMS(sellerID,name,buyout,starting_bid,end_date,type,state) VALUES ("+newItem.clientid+",'"+newItem.name+"',"+newItem.buyoutPrice+","+newItem.startingBid+",'"+newItem.endDate+"',"+newItem.type+",0)";
                             int a = cmd.ExecuteNonQuery();
                             if (a == 0)
                             {
@@ -268,6 +268,25 @@ namespace RendszerfejlesztesServer
                             e.ReplyLine("placebid ");
                         });
                             break;
+                    }
+                case "buyout":
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(uzenet);
+                            txtStatus.AppendText(Environment.NewLine);
+                            /*string id = uzenet.Substring(uzenet.IndexOf(" ") + 1, uzenet.IndexOf(",") - uzenet.IndexOf(" ") - 1);
+                            string value = uzenet.Substring(uzenet.IndexOf(",") + 1);*/
+                            int clientid = int.Parse(uzenet.Substring(uzenet.IndexOf(",")+1));
+                            int termekid = int.Parse(uzenet.Substring(uzenet.IndexOf(" ")+1, uzenet.IndexOf(",") - uzenet.IndexOf(" ")-1));
+
+                            string query = "UPDATE Items SET state=1, vasarloid="+clientid+" WHERE Items.id="+termekid;
+                            cmd.CommandText = query;
+                            cmd.ExecuteNonQuery();
+                            e.ReplyLine("buyout true");
+                        });
+                        break;
                     }
                 default:
                     {

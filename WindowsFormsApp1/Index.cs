@@ -14,7 +14,16 @@ namespace WindowsFormsApp1
 {
     public partial class Index : Form
     {//main page basically  
-        
+        public Index(SimpleTcpClient clientm, int id)
+        {
+            InitializeComponent();
+            client = clientm;
+            clientid = id;
+            client.DataReceived += Client_DataReceived;
+            LoadItem_Request();
+        }
+        SimpleTcpClient client;
+        int clientid;
         public void PlaceBid(object sender, EventArgs e)
         {                                                
             string buttonName = ((Button)sender).Name;
@@ -26,26 +35,46 @@ namespace WindowsFormsApp1
             client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
         }
 
+        public void Buyout(object sender, EventArgs e)
+        {
+            string buttonName = ((Button)sender).Name;
+            string row = buttonName.Substring(10);
+            Control ctr = panel.GetControlFromPosition(7, int.Parse(row) - 1);
+            Control ctr2 = panel.GetControlFromPosition(1, int.Parse(row) - 1);
+            string termeknev = ctr2.Text;
+            int sqlid = int.Parse(ctr.Name.Substring(7));
+            Buyout f1 = new Buyout(client, clientid, sqlid, termeknev);
+            f1.Show();
+        }
+
         private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements, int sql_id)
         {            
             if (panel.ColumnCount != rowElements.Length)
-                throw new Exception("Elements number doesn't match!");
+                throw new Exception("Elements number doesn't match!"+panel.ColumnCount+" "+rowElements.Length);
             panel.RowCount++;
             panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             for (int i = 0; i < rowElements.Length; i++)
             {
-                if(i==rowElements.Length-2)
+                if(i==rowElements.Length-3)
                 {
                     TextBox tx = new TextBox();
                     tx.Name = "bidtxt_" + sql_id; 
                     panel.Controls.Add(tx, i, panel.RowCount - 1);
                 }
-                else if(i==rowElements.Length-1)
+                else if(i==rowElements.Length-2)
                 {
                     Button bn = new Button();
                     bn.Text = "Place bid";
                     bn.Name = "bidbtn_" + panel.RowCount;
                     bn.Click += new EventHandler(PlaceBid);
+                    panel.Controls.Add(bn, i, panel.RowCount - 1);
+                }
+                else if (i == rowElements.Length - 1)
+                {
+                    Button bn = new Button();
+                    bn.Text = "Buyout";
+                    bn.Name = "buyoutbtn_" + panel.RowCount;
+                    bn.Click += new EventHandler(Buyout);
                     panel.Controls.Add(bn, i, panel.RowCount - 1);
                 }
                 else
@@ -54,16 +83,7 @@ namespace WindowsFormsApp1
                 }                
             }
         }
-        public Index(SimpleTcpClient clientm, int id)
-        {
-            InitializeComponent();
-            client = clientm;
-            clientid = id;
-            client.DataReceived += Client_DataReceived;
-            LoadItem_Request();
-        }
-        SimpleTcpClient client;
-        int clientid;        
+               
         private void Client_DataReceived(object sender, SimpleTCP.Message e)
         {
            
@@ -80,7 +100,7 @@ namespace WindowsFormsApp1
                             panel.Controls[i].Dispose();
                     panel.Controls.Clear();
                     panel.RowCount = 1;
-                    string[] rowElements = { "Image", "Item name", "Item type", "Seller name", "Buyout price", "End date", "Current bid", "Add bid", "" };
+                    string[] rowElements = { "Image", "Item name", "Item type", "Seller name", "Buyout price", "End date", "Current bid", "Add bid", "", "Buyout" };
                     if (panel.ColumnCount != rowElements.Length)
                         throw new Exception("Elements number doesn't match!");
                     for (int i = 0; i < rowElements.Length; i++)
@@ -99,6 +119,7 @@ namespace WindowsFormsApp1
                                 it.current_bid.ToString(), //current_bid
                                 "",
                                 "",
+                                ""
                         };                        
                         AddRowToPanel(panel, row,it.sql_id);
                     }                    
