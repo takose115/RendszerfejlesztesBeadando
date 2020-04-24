@@ -81,7 +81,7 @@ namespace WindowsFormsApp1
                 else if(i==0)
                 {
                     PictureBox pb = new PictureBox();
-                    pb.Image = Image.FromFile(rowElements[i]);
+                    pb.Image = Image.FromStream(new MemoryStream(Convert.FromBase64String(rowElements[0])));
                     pb.SizeMode = PictureBoxSizeMode.StretchImage;
                     panel.Controls.Add(pb, i, panel.RowCount - 1);
                 }

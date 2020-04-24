@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace WindowsFormsApp1
     public partial class AddItem : Form
     {//domján ide irod a cuccaid
         //oksa, köszi Ákos
+        //itt járt Marci
+
+        Boolean imgOK = false;
         public AddItem(SimpleTcpClient clientm, int id)
         {
             InitializeComponent();
@@ -64,15 +68,16 @@ namespace WindowsFormsApp1
 
         public class Item
         {
-            
+            public string image; 
             public int clientid;
             public string name;
             public int buyoutPrice;
             public int startingBid;
             public string endDate;
             public int type;
-            public Item(int cid, string na, int bp, int sb, string ed, int ty)
+            public Item(string image,int cid, string na, int bp, int sb, string ed, int ty)
             {
+                this.image = image;
                 clientid = cid;
                 name = na;
                 buyoutPrice = bp;
@@ -93,21 +98,53 @@ namespace WindowsFormsApp1
 
         private void SendBtn_Click(object sender, EventArgs e)
         {
-            string name = text_name.Text;
-            int startbid = int.Parse(num_start.Value.ToString());
-            int buyout = int.Parse(num_buyout.Value.ToString());
-            string enddate = date_ending.Value.ToString();
-            int type = list_type.SelectedIndex+1;
+            if(imgOK)
+            {
+                string name = text_name.Text;
+                int startbid = int.Parse(num_start.Value.ToString());
+                int buyout = int.Parse(num_buyout.Value.ToString());
+                string enddate = date_ending.Value.ToString();
+                int type = list_type.SelectedIndex + 1;
 
-            List<Item> termekLista = new List<Item>();
-            Item termek = new Item(clientid,name,startbid,buyout,enddate,type);
-            termekLista.Add(termek);
+                byte[] imageArray = ImageToByteArray(picImage.Image);
+                string imageString = Convert.ToBase64String(imageArray);
 
-            string uzenet = "newItem ";
-            var serializer = JsonNet.Serialize(termek);
-            client.WriteLineAndGetReply(uzenet+serializer, TimeSpan.FromSeconds(0));
+                List<Item> termekLista = new List<Item>();
+                Item termek = new Item(imageString,clientid, name, startbid, buyout, enddate, type);
+                termekLista.Add(termek);
+
+                string uzenet = "newItem ";
+                var serializer = JsonNet.Serialize(termek);
+                client.WriteLineAndGetReply(uzenet + serializer, TimeSpan.FromSeconds(0));
+            }
+            else
+            {
+                MessageBox.Show("Upload image!");
+            }
         }
-        
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileOpen = new OpenFileDialog();
+            fileOpen.Title = "Open Image file";
+            fileOpen.Filter = "JPG Files (*.jpg;*.jpeg;)| *.jpg;*.jpeg;";
+
+            if (fileOpen.ShowDialog() == DialogResult.OK)
+            {
+                picImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                picImage.Image = Image.FromFile(fileOpen.FileName);
+                imgOK = true;
+            }
+            fileOpen.Dispose();
+        }
+        public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, imageIn.RawFormat);
+                return ms.ToArray();
+            }
+        }
     }
 }
         

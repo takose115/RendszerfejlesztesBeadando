@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,6 +36,26 @@ namespace RendszerfejlesztesServer
             server = new SimpleTcpServer();
             server.StringEncoder = Encoding.UTF8;
             server.DataReceived += Server_DataReceived;
+        }
+
+        public Image resizeImage(Image imgToResize, Size size)
+        {
+            return (Image)(new Bitmap(imgToResize, size));
+        }
+        public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, imageIn.RawFormat);
+                return ms.ToArray();
+            }
+        }
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         private void Server_DataReceived(object sender, SimpleTCP.Message e)
@@ -125,12 +147,14 @@ namespace RendszerfejlesztesServer
                                 cmd = new SQLiteCommand("" +
                                 "SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where state=0 GROUP BY items.id", adatb.GetConnection());                                
                                 reader = cmd.ExecuteReader();
-                                Image img;
-                                img = Image.FromFile("..//..//img//testkep.jpg");
                                 while (reader.Read())
-                                {                                    
+                                {
+                                    Image img = Image.FromFile(reader.GetString(0));
+                                    //Image img = resizeImage(img, new Size(80,50));
+                                    byte[] imageArray = ImageToByteArray(img);
+                                    string imageString = Convert.ToBase64String(imageArray);
                                     itemList.Add(new Item(
-                                        reader.GetString(0), //item.image 
+                                        imageString, //item.image 
                                         reader.GetString(1), //item.name                                       
                                         reader.GetString(2), //type.name
                                         reader.GetString(3), //user.username
@@ -141,7 +165,6 @@ namespace RendszerfejlesztesServer
                                         ));
                                 }
                                 var stringjson = JsonNet.Serialize(itemList);
-                                txtStatus.AppendText(stringjson);
                                 e.ReplyLine("itemload " + stringjson);
                                 reader.Close();
                             }
@@ -165,21 +188,25 @@ namespace RendszerfejlesztesServer
 
                                 string keyword = uzenet.Substring(uzenet.IndexOf(" ") + 1);
 
-                                cmd = new SQLiteCommand("SELECT items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%' and state=0 GROUP BY items.id", adatb.GetConnection());
+                                cmd = new SQLiteCommand("SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%' and state=0 GROUP BY items.id", adatb.GetConnection());
                                 reader = cmd.ExecuteReader();
-                                /*while (reader.Read())
+                                while (reader.Read())
                                 {
+                                    Image img = Image.FromFile(reader.GetString(0));
+                                    //Image img = resizeImage(img, new Size(80,50));
+                                    byte[] imageArray = ImageToByteArray(img);
+                                    string imageString = Convert.ToBase64String(imageArray);
                                     itemList.Add(new Item(
-                                        "",
-                                        reader.GetString(0),
-                                        reader.GetString(1),
-                                        reader.GetString(2),
-                                        reader.GetInt32(3),
-                                        reader.GetString(4),
-                                        reader.GetInt32(5),
-                                        reader.GetInt32(6)
+                                        imageString, //item.image 
+                                        reader.GetString(1), //item.name                                       
+                                        reader.GetString(2), //type.name
+                                        reader.GetString(3), //user.username
+                                        reader.GetInt32(4), //item.buyout
+                                        reader.GetString(5), //item.end_date
+                                        reader.GetInt32(6), //bids.value
+                                        reader.GetInt32(7) //item.id
                                         ));
-                                }*/
+                                }
                                 var stringjson = JsonNet.Serialize(itemList);
                                 txtStatus.AppendText(keyword);
                                 e.ReplyLine("itemload " + stringjson);
@@ -201,9 +228,12 @@ namespace RendszerfejlesztesServer
                             txtStatus.AppendText(Environment.NewLine);
                             string eredmeny = uzenet.Substring(uzenet.IndexOf(" ") + 1);
                             NewItem newItem =JsonNet.Deserialize<NewItem>(eredmeny);
+                            Image img = Image.FromStream(new MemoryStream(Convert.FromBase64String(newItem.image)));                            
+                            string imgPath = "..//..//img//" + RandomString(10)+".jpg";
+                            img.Save(imgPath, ImageFormat.Jpeg);
                             txtStatus.AppendText(newItem.clientid + ", " + newItem.name + ", " + newItem.buyoutPrice + ", " + newItem.startingBid + ", " + newItem.endDate + ", " + newItem.type);
                             txtStatus.AppendText(Environment.NewLine);
-                            cmd.CommandText = "insert into ITEMS(sellerID,name,buyout,starting_bid,end_date,type,state) VALUES ("+newItem.clientid+",'"+newItem.name+"',"+newItem.buyoutPrice+","+newItem.startingBid+",'"+newItem.endDate+"',"+newItem.type+",0)";
+                            cmd.CommandText = "insert into ITEMS(sellerID,name,buyout,starting_bid,end_date,type,state,image) VALUES ("+newItem.clientid+",'"+newItem.name+"',"+newItem.buyoutPrice+","+newItem.startingBid+",'"+newItem.endDate+"',"+newItem.type+",0,'"+imgPath+"')";
                             int a = cmd.ExecuteNonQuery();
                             if (a == 0)
                             {
@@ -390,15 +420,16 @@ namespace RendszerfejlesztesServer
 
     public class NewItem
     {
-
+        public string image;
         public int clientid;
         public string name;
         public int buyoutPrice;
         public int startingBid;
         public string endDate;
         public int type;
-        public NewItem(int cid, string na, int bp, int sb, string ed, int ty)
+        public NewItem(string image,int cid, string na, int bp, int sb, string ed, int ty)
         {
+            this.image = image;
             clientid = cid;
             name = na;
             buyoutPrice = bp;
