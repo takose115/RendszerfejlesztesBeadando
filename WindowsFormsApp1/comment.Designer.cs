@@ -40,6 +40,7 @@
             this.but_cancel.TabIndex = 0;
             this.but_cancel.Text = "Cancel";
             this.but_cancel.UseVisualStyleBackColor = true;
+            this.but_cancel.Click += new System.EventHandler(this.but_cancel_Click);
             // 
             // but_comment
             // 

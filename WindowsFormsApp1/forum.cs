@@ -39,6 +39,9 @@ namespace WindowsFormsApp1
             client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
         }
 
+        // !!!!!!
+        // a topic sql idéjét kéne tovabb adni és azzal dolgozni a szerverben
+
         private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements, int sql_id)
         {
             if (panel.ColumnCount != rowElements.Length)
@@ -47,10 +50,11 @@ namespace WindowsFormsApp1
             panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             for (int i = 0; i < rowElements.Length; i++)
             {
-                panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
-                //Label lb = new Label();
-                //lb.Click += new EventHandler(topic_open_Click);
-                //panel.Controls.Add(lb, i, panel.RowCount - 1);
+                //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                Label lb = new Label();
+                lb.Text = rowElements[i];
+                lb.Click += new EventHandler((sender, e) => topic_open_Click(sender, e, rowElements[1])); // <-- itt kell változtatni
+                panel.Controls.Add(lb, i, panel.RowCount - 1);
 
 
             }
@@ -96,9 +100,10 @@ namespace WindowsFormsApp1
 
         }
 
-        private void topic_open_Click(object sender, EventArgs e)
+        private void topic_open_Click(object sender, EventArgs e, string user)
         {
-            comment f1 = new comment(client, clientid);
+            string username=user;
+            comment f1 = new comment(client, clientid, username);
             this.Hide();
             f1.Show();
         }

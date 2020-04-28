@@ -176,6 +176,12 @@ namespace RendszerfejlesztesServer
                         break;
                     }
 
+                case "commentload":
+                    {
+                        
+                        break;
+                    }
+
                 case "topicload":
                     {
                         txtStatus.Invoke((MethodInvoker)delegate ()

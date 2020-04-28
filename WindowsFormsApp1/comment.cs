@@ -16,9 +16,33 @@ namespace WindowsFormsApp1
 {
     public partial class comment : Form
     {
-        public comment(SimpleTcpClient clientm, int id)
+
+        public comment(SimpleTcpClient clientm, int id, string username)
         {
             InitializeComponent();
+
+            client = clientm;
+            clientid = id;
+            string authorname = username;
+
+            LoadComments_Request();
+
+        }
+
+        SimpleTcpClient client;
+        int clientid;
+
+        private void but_cancel_Click(object sender, EventArgs e)
+        {
+            forum f1 = new forum(client, clientid);
+            this.Hide();
+            f1.Show();
+        }
+
+        private void LoadComments_Request()
+        {
+            string uzenet = "commentload ";
+            client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
         }
     }
 }
