@@ -175,6 +175,43 @@ namespace RendszerfejlesztesServer
                         });
                         break;
                     }
+
+                case "topicload":
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(command);
+                            txtStatus.AppendText(Environment.NewLine);
+                            try
+                            {
+                                List<Topic> topicList = new List<Topic>();
+
+                                cmd = new SQLiteCommand("" +
+                                "SELECT forum.title, forum.date, users.username, forum.id FROM Forum JOIN Users ON forum.userID = Users.id", adatb.GetConnection());
+                                reader = cmd.ExecuteReader();
+                                while (reader.Read())
+                                {
+                                    
+                                    topicList.Add(new Topic(
+                                        
+                                        reader.GetString(0), //topic_name
+                                        reader.GetString(1), //topic_date     
+                                        reader.GetString(2), //topic_user                                             
+                                        reader.GetInt32(3) //id
+                                        ));
+                                }
+                                var stringjson = JsonNet.Serialize(topicList);
+                                e.ReplyLine("topicload " + stringjson);
+                                reader.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                hibaLabel.Text = ex.ToString();
+                            }
+                        });
+                        break;
+                    }
                 case "search":
                     {
                         txtStatus.Invoke((MethodInvoker)delegate ()
@@ -415,6 +452,23 @@ namespace RendszerfejlesztesServer
             this.endDate = endDate;
             this.current_bid = current_bid;
             this.sql_id = sql_id;
+        }
+    }
+
+    public class Topic
+    {
+
+        public string title;
+        public string user;
+        public string date;
+        public int id_sql;
+
+        public Topic(string tit, string dat, string u, int sql)
+        {
+            this.title = tit;
+            this.date = dat;
+            this.user = u;
+            this.id_sql = sql;
         }
     }
 

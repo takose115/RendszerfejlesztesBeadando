@@ -90,6 +90,12 @@
     <Compile Include="Buyout.Designer.cs">
       <DependentUpon>Buyout.cs</DependentUpon>
     </Compile>
+    <Compile Include="comment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="comment.Designer.cs">
+      <DependentUpon>comment.cs</DependentUpon>
+    </Compile>
     <Compile Include="forum.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Buyout.resx">
       <DependentUpon>Buyout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="comment.resx">
+      <DependentUpon>comment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forum.resx">
       <DependentUpon>forum.cs</DependentUpon>

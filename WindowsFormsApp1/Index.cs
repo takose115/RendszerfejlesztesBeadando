@@ -101,7 +101,7 @@ namespace WindowsFormsApp1
             {
                 List<Item> itemlist = new List<Item>();
                 string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1);
-                itemlist = JsonNet.Deserialize<List<Item>>(eredmeny);                
+                itemlist = JsonNet.Deserialize<List<Item>>(eredmeny);
                 Invoke(new MethodInvoker(delegate ()
                 {
                     for (int i = panel.Controls.Count - 1; i >= 1; --i)
@@ -206,7 +206,12 @@ namespace WindowsFormsApp1
             this.current_bid = current_bid;
             this.sql_id = sql_id;
         }
-        public Item() { }
+
+
+        public Item()
+        {
+           
+        }
     }
 
 }

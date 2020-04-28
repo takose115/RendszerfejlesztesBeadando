@@ -24,11 +24,84 @@ namespace WindowsFormsApp1
 
             client = clientm;
             clientid = id;
-            
+
+            client.DataReceived += Client_DataReceived;
+            LoadTopic_Request();
+
         }
 
         SimpleTcpClient client;
         int clientid;
+
+        private void LoadTopic_Request()
+        {
+            string uzenet = "topicload ";
+            client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
+        }
+
+        private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements, int sql_id)
+        {
+            if (panel.ColumnCount != rowElements.Length)
+                throw new Exception("Elements number doesn't match!" + panel.ColumnCount + " " + rowElements.Length);
+            panel.RowCount++;
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            for (int i = 0; i < rowElements.Length; i++)
+            {
+                panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                //Label lb = new Label();
+                //lb.Click += new EventHandler(topic_open_Click);
+                //panel.Controls.Add(lb, i, panel.RowCount - 1);
+
+
+            }
+        }
+
+        private void Client_DataReceived(object sender, SimpleTCP.Message e)
+        {
+            
+            string valasz = e.MessageString.Substring(0, e.MessageString.Length - 1);
+            
+            string command = valasz.Substring(0, valasz.IndexOf(" "));
+            if (command == "topicload")
+            {
+                List<Topic> topiclist = new List<Topic>();
+                string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1);
+                topiclist = JsonNet.Deserialize<List<Topic>>(eredmeny);
+                Invoke(new MethodInvoker(delegate ()
+                {
+                    for (int i = panel.Controls.Count - 1; i >= 1; --i)
+                        panel.Controls[i].Dispose();
+                    panel.Controls.Clear();
+                    panel.RowCount = 1;
+                    string[] rowElements = { "Title", "User", "Date" };
+                    if (panel.ColumnCount != rowElements.Length)
+                        throw new Exception("Elements number doesn't match!");
+                    for (int i = 0; i < rowElements.Length; i++)
+                    {
+                        panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                    }
+                    foreach (Topic it in topiclist)
+                    {
+                        string[] row = {
+                                
+                                it.title.ToString(),	
+                                it.user.ToString(), 
+                                it.date.ToString(), 
+                                
+                        };
+                        AddRowToPanel(panel, row, it.id_sql);
+                    }
+                }));
+            }
+
+        }
+
+        private void topic_open_Click(object sender, EventArgs e)
+        {
+            comment f1 = new comment(client, clientid);
+            this.Hide();
+            f1.Show();
+        }
 
         private void but_cancel_Click(object sender, EventArgs e)
         {
@@ -43,5 +116,28 @@ namespace WindowsFormsApp1
             this.Hide();
             f1.Show();
         }
+    }
+
+    public class Topic
+    {
+
+        public string title;
+        public string user;   
+        public string date;
+        public int id_sql;
+
+        public Topic(string tit, string dat, string u, int sql)
+        {
+            this.title = tit;
+            this.date = dat;
+            this.user = u;
+            this.id_sql = sql;
+        }
+
+        public Topic()
+        {
+            
+        }
+
     }
 }
