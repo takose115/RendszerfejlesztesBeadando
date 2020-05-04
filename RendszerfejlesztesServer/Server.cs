@@ -272,15 +272,15 @@ namespace RendszerfejlesztesServer
                             List<NewComment> commentlist = new List<NewComment>();
 
                             string eredmeny = uzenet.Substring(uzenet.IndexOf(" ") + 1);
-                            //MessageBox.Show(eredmeny);
-                            //commentlist = JsonNet.Deserialize<List<NewComment>>(eredmeny); //itt baj van 
+                           
+                            commentlist = JsonNet.Deserialize<List<NewComment>>(eredmeny); //itt baj van 
 
                             //MessageBox.Show(comment.comment+comment.date+comment.postID.ToString()+comment.userid.ToString());
 
-                            /*txtStatus.AppendText(newComment.comment + ", " + newComment.date + ", " + newComment.userid + ", " + newComment.postID);
+                            txtStatus.AppendText(commentlist[0].comment + ", " + commentlist[0].date + ", " + commentlist[0].userID + ", " + commentlist[0].postID);
                             txtStatus.AppendText(Environment.NewLine);
 
-                            cmd.CommandText = "insert into COMMENT(postID,comment,date,userID) VALUES ('" + newComment.postID + "','"+ newComment.comment + "','" + newComment.date + "'," + newComment.userid + "')";
+                            cmd.CommandText = "insert into COMMENT(postID,comment,date,userID) VALUES (" + commentlist[0].postID + ",'"+ commentlist[0].comment + "','" + commentlist[0].date + "'," + commentlist[0].userID + ")";
                             int a = cmd.ExecuteNonQuery();
                             if (a == 0)
                             {
@@ -291,7 +291,7 @@ namespace RendszerfejlesztesServer
                             {
                                 e.ReplyLine("newComment true");
                                 txtStatus.AppendText("newComment succesfull");
-                            }*/
+                            }
                         });
                         break;
                     }
@@ -627,7 +627,7 @@ namespace RendszerfejlesztesServer
         
         public string comment;
         public string date;
-        public int userid;
+        public int userID;
         public int postID;
 
 
@@ -635,7 +635,7 @@ namespace RendszerfejlesztesServer
         {
             comment = c;
             date = d;
-            userid = user;
+            userID = user;
             postID = post;
 
         }
