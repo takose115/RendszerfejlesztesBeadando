@@ -178,7 +178,49 @@ namespace RendszerfejlesztesServer
 
                 case "commentload":
                     {
-                        
+
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(uzenet);
+                            txtStatus.AppendText(Environment.NewLine);
+                            try
+                            {
+
+                                List<NagyTopic> itemList = new List<NagyTopic>();
+
+                                string topicid = uzenet.Substring(uzenet.IndexOf(" ") + 1);
+
+                                cmd = new SQLiteCommand("" +
+                                    "SELECT forum.title, forum.description, users.username from Forum JOIN Users ON forum.userID = Users.id WHERE forum.id=" + topicid, adatb.GetConnection());
+
+                                reader = cmd.ExecuteReader();
+
+                                //MessageBox.Show(reader.GetString(0)+ reader.GetString(1)+ reader.GetString(2));
+
+                                while (reader.Read())
+                                {
+
+                                    itemList.Add(new NagyTopic(
+
+                                                reader.GetString(0), //title                                      
+                                                reader.GetString(1), //desc
+                                                reader.GetString(2) //username
+
+                                                ));
+                                }
+
+                                //MessageBox.Show(itemList[0].title+ itemList[0].desc+ itemList[0].user);
+
+                                var stringjson = JsonNet.Serialize(itemList);
+                                e.ReplyLine("commentload " + stringjson);
+                                reader.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                hibaLabel.Text = ex.ToString();
+                            }
+                        });
                         break;
                     }
 
@@ -215,6 +257,41 @@ namespace RendszerfejlesztesServer
                             {
                                 hibaLabel.Text = ex.ToString();
                             }
+                        });
+                        break;
+                    }
+
+                case "addcomment":
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText("addcomment");
+                            txtStatus.AppendText(Environment.NewLine);
+
+                            List<NewComment> commentlist = new List<NewComment>();
+
+                            string eredmeny = uzenet.Substring(uzenet.IndexOf(" ") + 1);
+                            //MessageBox.Show(eredmeny);
+                            //commentlist = JsonNet.Deserialize<List<NewComment>>(eredmeny); //itt baj van 
+
+                            //MessageBox.Show(comment.comment+comment.date+comment.postID.ToString()+comment.userid.ToString());
+
+                            /*txtStatus.AppendText(newComment.comment + ", " + newComment.date + ", " + newComment.userid + ", " + newComment.postID);
+                            txtStatus.AppendText(Environment.NewLine);
+
+                            cmd.CommandText = "insert into COMMENT(postID,comment,date,userID) VALUES ('" + newComment.postID + "','"+ newComment.comment + "','" + newComment.date + "'," + newComment.userid + "')";
+                            int a = cmd.ExecuteNonQuery();
+                            if (a == 0)
+                            {
+                                e.ReplyLine("newComment false");
+                                txtStatus.AppendText("newComment failed");
+                            }
+                            else
+                            {
+                                e.ReplyLine("newComment true");
+                                txtStatus.AppendText("newComment succesfull");
+                            }*/
                         });
                         break;
                     }
@@ -520,4 +597,53 @@ namespace RendszerfejlesztesServer
         public NewTopic() { }
 
     }
+
+    public class NagyTopic
+    {
+
+        public string title;
+        public string user;
+        public string desc;
+
+
+        public NagyTopic(string tit, string des, string u)
+        {
+            this.title = tit;
+            this.desc = des;
+            this.user = u;
+            
+        }
+
+        public NagyTopic()
+        {
+
+        }
+
+    }
+
+    public class NewComment
+    {
+
+        
+        public string comment;
+        public string date;
+        public int userid;
+        public int postID;
+
+
+        public NewComment(string c, string d, int user, int post)
+        {
+            comment = c;
+            date = d;
+            userid = user;
+            postID = post;
+
+        }
+        public NewComment() { }
+
+    }
+
+
 }
+
+

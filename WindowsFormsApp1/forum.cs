@@ -39,8 +39,7 @@ namespace WindowsFormsApp1
             client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
         }
 
-        // !!!!!!
-        // a topic sql idéjét kéne tovabb adni és azzal dolgozni a szerverben
+        
 
         private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements, int sql_id)
         {
@@ -53,7 +52,7 @@ namespace WindowsFormsApp1
                 //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                 Label lb = new Label();
                 lb.Text = rowElements[i];
-                lb.Click += new EventHandler((sender, e) => topic_open_Click(sender, e, rowElements[1])); // <-- itt kell változtatni
+                lb.Click += new EventHandler((sender, e) => topic_open_Click(sender, e, sql_id)); 
                 panel.Controls.Add(lb, i, panel.RowCount - 1);
 
 
@@ -80,17 +79,20 @@ namespace WindowsFormsApp1
                     string[] rowElements = { "Title", "User", "Date" };
                     if (panel.ColumnCount != rowElements.Length)
                         throw new Exception("Elements number doesn't match!");
-                    for (int i = 0; i < rowElements.Length; i++)
+                    for (int i = 0; i < rowElements.Length-1; i++)
                     {
                         panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                     }
+
+                    //rowElements[3]=
+                    
                     foreach (Topic it in topiclist)
                     {
                         string[] row = {
-                                
-                                it.title.ToString(),	
-                                it.user.ToString(), 
-                                it.date.ToString(), 
+
+                                it.title.ToString(),
+                                it.user.ToString(),
+                                it.date.ToString(),
                                 
                         };
                         AddRowToPanel(panel, row, it.id_sql);
@@ -100,10 +102,10 @@ namespace WindowsFormsApp1
 
         }
 
-        private void topic_open_Click(object sender, EventArgs e, string user)
+        private void topic_open_Click(object sender, EventArgs e, int sql_id)
         {
-            string username=user;
-            comment f1 = new comment(client, clientid, username);
+            
+            comment f1 = new comment(client, clientid, sql_id);
             this.Hide();
             f1.Show();
         }

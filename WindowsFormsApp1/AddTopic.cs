@@ -81,6 +81,7 @@ namespace WindowsFormsApp1
             string title = txt_title.Text;
             string desc = txt_desc.Text;
             string date = DateTime.Now.ToString("MM\\/dd\\/yyyy h\\:mm tt");
+            
 
             List<Topic> topicLista = new List<Topic>();
             Topic topic = new Topic(clientid, title, desc, date);
