@@ -49,10 +49,11 @@ namespace WindowsFormsApp1
             panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             for (int i = 0; i < rowElements.Length; i++)
             {
+                //MessageBox.Show(rowElements[i]);
                 //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                 Label lb = new Label();
                 lb.Text = rowElements[i];
-                lb.Click += new EventHandler((sender, e) => topic_open_Click(sender, e, sql_id)); 
+                lb.Click += new EventHandler((sender, e) => topic_open_Click(sender, e, sql_id));
                 panel.Controls.Add(lb, i, panel.RowCount - 1);
 
 
@@ -76,16 +77,28 @@ namespace WindowsFormsApp1
                         panel.Controls[i].Dispose();
                     panel.Controls.Clear();
                     panel.RowCount = 1;
-                    string[] rowElements = { "Title", "User", "Date" };
+                    string[] rowElements = { "Title", "User", "Date", };
+                    
                     if (panel.ColumnCount != rowElements.Length)
                         throw new Exception("Elements number doesn't match!");
-                    for (int i = 0; i < rowElements.Length-1; i++)
+                    for (int i = 0; i < rowElements.Length; i++)
                     {
                         panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                     }
 
-                    //rowElements[3]=
-                    
+                    panel.RowCount = 2;
+                    string[] uressor = { "   ", "   ", "   " };
+
+                    if (panel.ColumnCount != uressor.Length)
+                        throw new Exception("Elements number doesn't match!");
+                    for (int i = 0; i < uressor.Length; i++)
+                    {
+                        panel.Controls.Add(new Label() { Text = uressor[i] }, i, panel.RowCount - 1);
+                    }
+
+                    //így oldom meg a spacet a cimsor alatt
+
+
                     foreach (Topic it in topiclist)
                     {
                         string[] row = {

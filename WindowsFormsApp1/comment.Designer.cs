@@ -35,6 +35,7 @@
             this.txt_comment = new System.Windows.Forms.TextBox();
             this.lab_titok = new System.Windows.Forms.Label();
             this.panel = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // but_cancel
@@ -59,17 +60,19 @@
             // 
             // lab_title
             // 
+            this.lab_title.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lab_title.Location = new System.Drawing.Point(48, 42);
             this.lab_title.Name = "lab_title";
-            this.lab_title.Size = new System.Drawing.Size(2206, 43);
+            this.lab_title.Size = new System.Drawing.Size(2206, 67);
             this.lab_title.TabIndex = 2;
             this.lab_title.Text = "label1";
             // 
             // lab_desc
             // 
-            this.lab_desc.Location = new System.Drawing.Point(48, 85);
+            this.lab_desc.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lab_desc.Location = new System.Drawing.Point(50, 109);
             this.lab_desc.Name = "lab_desc";
-            this.lab_desc.Size = new System.Drawing.Size(2395, 207);
+            this.lab_desc.Size = new System.Drawing.Size(2455, 111);
             this.lab_desc.TabIndex = 3;
             this.lab_desc.Text = "label2";
             // 
@@ -92,23 +95,38 @@
             // 
             // panel
             // 
+            this.panel.AllowDrop = true;
+            this.panel.AutoScroll = true;
+            this.panel.AutoSize = true;
             this.panel.ColumnCount = 3;
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 88.41491F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.58509F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 224F));
-            this.panel.Location = new System.Drawing.Point(52, 307);
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.82832F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 89.17168F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 289F));
+            this.panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.panel.Location = new System.Drawing.Point(52, 316);
             this.panel.Name = "panel";
             this.panel.RowCount = 2;
             this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.36082F));
             this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.63918F));
-            this.panel.Size = new System.Drawing.Size(2451, 97);
+            this.panel.Size = new System.Drawing.Size(2451, 102);
             this.panel.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.Location = new System.Drawing.Point(52, 258);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(163, 36);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Comments:";
             // 
             // comment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2582, 1197);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.lab_titok);
             this.Controls.Add(this.txt_comment);
@@ -118,6 +136,7 @@
             this.Controls.Add(this.but_cancel);
             this.Name = "comment";
             this.Text = "/";
+            this.Load += new System.EventHandler(this.comment_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,5 +151,6 @@
         private System.Windows.Forms.TextBox txt_comment;
         private System.Windows.Forms.Label lab_titok;
         private System.Windows.Forms.TableLayoutPanel panel;
+        internal System.Windows.Forms.Label label1;
     }
 }

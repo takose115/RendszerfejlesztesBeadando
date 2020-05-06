@@ -74,10 +74,10 @@ namespace WindowsFormsApp1
                 List<NagyTopic> topiclist = new List<NagyTopic>();
                 string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1);
                 topiclist = JsonNet.Deserialize<List<NagyTopic>>(eredmeny);
-               
 
+                MessageBox.Show(topiclist[0].title);
                 
-                    lab_title.Text = topiclist[0].title;
+                    lab_title.Text = topiclist[0].title; // !!! ITT HIBA VAN HA EGY FORUMBOL VISSZALÉPÜNK EGY MASIKBA
                     lab_desc.Text= topiclist[0].desc;
                 
             }
@@ -92,6 +92,7 @@ namespace WindowsFormsApp1
                     string id = valasz.Substring(15);
                     
                     MessageBox.Show("New comment has been posted!");
+                    //txt_comment.Text = "";
                     LoadActualComments_Request(id);
                 }
                 else
@@ -109,23 +110,35 @@ namespace WindowsFormsApp1
                         panel.Controls[i].Dispose();
                         panel.Controls.Clear();
                         panel.RowCount = 1;
-                        string[] rowElements = { "Comment", "Username", "Date" };
+                        string[] rowElements = {  "Username", "Comment", "Date", };
                     if (panel.ColumnCount != rowElements.Length)
                         throw new Exception("Elements number doesn't match!");
-                    for (int i = 0; i < rowElements.Length - 1; i++)
+                    for (int i = 0; i < rowElements.Length ; i++)
                     {
                         panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                     }
 
-                    //rowElements[3]=
+                    panel.RowCount = 2;
+                    string[] uressor = { "   ", "   ", "   " };
+
+                    if (panel.ColumnCount != uressor.Length)
+                        throw new Exception("Elements number doesn't match!");
+                    for (int i = 0; i < uressor.Length; i++)
+                    {
+                        panel.Controls.Add(new Label() { Text = uressor[i] }, i, panel.RowCount - 1);
+                    }
+
+                    //space a címsor alatt 
+
 
                     foreach (ListazottComment it in commentlist)
                     {
                         string[] row = {
 
+                                it.username.ToString(),
                                 it.comment.ToString(),
                                 it.date.ToString(),
-                                it.username.ToString(),
+                                
 
                         };
                         AddRowToPanel(panel, row);
@@ -172,6 +185,13 @@ namespace WindowsFormsApp1
 
             
         }
+
+        private void comment_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 
     public class NagyTopic
