@@ -34,7 +34,7 @@
             this.lab_desc = new System.Windows.Forms.Label();
             this.txt_comment = new System.Windows.Forms.TextBox();
             this.lab_titok = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
             // 
             // but_cancel
@@ -90,25 +90,26 @@
             this.lab_titok.Text = "label1";
             this.lab_titok.Visible = false;
             // 
-            // tableLayoutPanel1
+            // panel
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.66296F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.33704F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(52, 307);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(2451, 97);
-            this.tableLayoutPanel1.TabIndex = 6;
+            this.panel.ColumnCount = 3;
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 88.41491F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.58509F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 224F));
+            this.panel.Location = new System.Drawing.Point(52, 307);
+            this.panel.Name = "panel";
+            this.panel.RowCount = 2;
+            this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.36082F));
+            this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.63918F));
+            this.panel.Size = new System.Drawing.Size(2451, 97);
+            this.panel.TabIndex = 6;
             // 
             // comment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2582, 1197);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.panel);
             this.Controls.Add(this.lab_titok);
             this.Controls.Add(this.txt_comment);
             this.Controls.Add(this.lab_desc);
@@ -130,6 +131,6 @@
         private System.Windows.Forms.Label lab_desc;
         private System.Windows.Forms.TextBox txt_comment;
         private System.Windows.Forms.Label lab_titok;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel panel;
     }
 }

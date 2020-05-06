@@ -28,11 +28,38 @@ namespace WindowsFormsApp1
 
             client.DataReceived += Client_DataReceived;
             LoadComments_Request(topicid);
+            MessageBox.Show("ide valamiért kell egy ilyen stop");
+            LoadActualComments_Request(topicid);
+
 
         }
 
         SimpleTcpClient client;
         int clientid;
+
+        private void LoadActualComments_Request(string id)
+        {
+
+            string uzenet = "actualcommentload " + id;
+            client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
+        }
+
+        private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements)
+        {
+            if (panel.ColumnCount != rowElements.Length)
+                throw new Exception("Elements number doesn't match!" + panel.ColumnCount + " " + rowElements.Length);
+            panel.RowCount++;
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            for (int i = 0; i < rowElements.Length; i++)
+            {
+                //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                Label lb = new Label();
+                lb.Text = rowElements[i];    
+                panel.Controls.Add(lb, i, panel.RowCount - 1);
+
+
+            }
+        }
 
         private void Client_DataReceived(object sender, SimpleTCP.Message e)
         {
@@ -49,21 +76,61 @@ namespace WindowsFormsApp1
                 topiclist = JsonNet.Deserialize<List<NagyTopic>>(eredmeny);
                
 
-                Invoke(new MethodInvoker(delegate ()
-                {
+                
                     lab_title.Text = topiclist[0].title;
                     lab_desc.Text= topiclist[0].desc;
-                }));
+                
             }
             else if (command == "newComment")
             {
                 string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1, 4);
+                
                 if (eredmeny == "true")
                 {
+                    
+                    
+                    string id = valasz.Substring(15);
+                    
                     MessageBox.Show("New comment has been posted!");
+                    LoadActualComments_Request(id);
                 }
                 else
                     MessageBox.Show("Comment failed please try again!");
+            }
+            else if (command == "actualcommentload")
+            {
+                
+                List<ListazottComment> commentlist = new List<ListazottComment>();
+                string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1);
+                commentlist = JsonNet.Deserialize<List<ListazottComment>>(eredmeny);
+                Invoke(new MethodInvoker(delegate ()
+                {
+                    for (int i = panel.Controls.Count - 1; i >= 1; --i)
+                        panel.Controls[i].Dispose();
+                        panel.Controls.Clear();
+                        panel.RowCount = 1;
+                        string[] rowElements = { "Comment", "Username", "Date" };
+                    if (panel.ColumnCount != rowElements.Length)
+                        throw new Exception("Elements number doesn't match!");
+                    for (int i = 0; i < rowElements.Length - 1; i++)
+                    {
+                        panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                    }
+
+                    //rowElements[3]=
+
+                    foreach (ListazottComment it in commentlist)
+                    {
+                        string[] row = {
+
+                                it.comment.ToString(),
+                                it.date.ToString(),
+                                it.username.ToString(),
+
+                        };
+                        AddRowToPanel(panel, row);
+                    }
+                }));
             }
 
         }
@@ -80,6 +147,8 @@ namespace WindowsFormsApp1
             
             string uzenet = "commentload "+ id;
             client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
+
+           
         }
 
         private void but_comment_Click(object sender, EventArgs e)
@@ -149,6 +218,27 @@ namespace WindowsFormsApp1
         {
 
         }
+
+    }
+
+    public class ListazottComment
+    {
+
+
+        public string comment;
+        public string date;
+        public string username;
+
+
+
+        public ListazottComment(string c, string d, string u)
+        {
+            comment = c;
+            date = d;
+            username = u;
+
+        }
+        public ListazottComment() { }
 
     }
 }

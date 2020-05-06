@@ -224,6 +224,46 @@ namespace RendszerfejlesztesServer
                         break;
                     }
 
+                case "actualcommentload":
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(uzenet);
+                            txtStatus.AppendText(Environment.NewLine);
+                            try
+                            {
+                                List<Comment> commentlist = new List<Comment>();
+                                
+                                string topicid = uzenet.Substring(uzenet.IndexOf(" ") + 1);
+                               
+
+                                cmd = new SQLiteCommand(
+                                "SELECT Comment.comment, Comment.date, Users.username FROM Comment JOIN Users ON Comment.userID = Users.id WHERE Comment.postID ="+topicid, adatb.GetConnection());
+                                reader = cmd.ExecuteReader();
+
+                                while (reader.Read())
+                                {
+
+                                    commentlist.Add(new Comment(
+
+                                        reader.GetString(0), //comment
+                                        reader.GetString(1), //date     
+                                         reader.GetString(2) //username
+                                        ));
+                                }
+                                var stringjson = JsonNet.Serialize(commentlist);
+                                e.ReplyLine("actualcommentload " + stringjson);
+                                reader.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                hibaLabel.Text = ex.ToString();
+                            }
+                        });
+                        break;
+                    }
+
                 case "topicload":
                     {
                         txtStatus.Invoke((MethodInvoker)delegate ()
@@ -289,7 +329,7 @@ namespace RendszerfejlesztesServer
                             }
                             else
                             {
-                                e.ReplyLine("newComment true");
+                                e.ReplyLine("newComment true "+ commentlist[0].postID.ToString());
                                 txtStatus.AppendText("newComment succesfull");
                             }
                         });
@@ -643,7 +683,26 @@ namespace RendszerfejlesztesServer
 
     }
 
+    public class Comment
+    {
 
+
+        public string comment;
+        public string date;
+        public string username;
+        
+
+
+        public Comment(string c, string d, string u)
+        {
+            comment = c;
+            date = d;
+            username = u;
+
+        }
+        public Comment() { }
+
+    }
 }
 
 
