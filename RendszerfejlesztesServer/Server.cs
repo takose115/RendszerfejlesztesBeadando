@@ -11,6 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -27,9 +28,40 @@ namespace RendszerfejlesztesServer
         {
             InitializeComponent();
             adatb.openConnection();
-            cmd = new SQLiteCommand(adatb.GetConnection());
+            cmd = new SQLiteCommand(adatb.GetConnection());            
         }
         SimpleTcpServer server;
+        private static Mutex mut = new Mutex();
+        private void CheckExpiredAcutions()
+        {
+            SQLiteCommand cmd2 = new SQLiteCommand(adatb.GetConnection());
+            SQLiteDataReader reader2;
+            while (true)
+            {
+                mut.WaitOne();
+                string enddate;
+                int id;
+                cmd = new SQLiteCommand("Select id, end_date from Items", adatb.GetConnection());
+                reader2= cmd.ExecuteReader();
+                while (reader2.Read())
+                {
+                    id = reader2.GetInt32(0);
+                    enddate = reader2.GetString(1);
+                    DateTime now = DateTime.Now;
+                    DateTime endingdate = DateTime.Parse(enddate);
+                    if (endingdate < now)
+                    {
+                        
+                        cmd2.CommandText = "update items set state=1 where id=" + id;
+                        cmd2.ExecuteNonQuery();
+                    }
+                }
+                reader2.Close();
+                mut.ReleaseMutex();
+                Thread.Sleep(1000);
+            }
+            
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -63,6 +95,7 @@ namespace RendszerfejlesztesServer
             string temp2 = e.MessageString;
             string uzenet= e.MessageString.Substring(0, e.MessageString.Length - 1);
             string command = uzenet.Substring(0, uzenet.IndexOf(" "));
+            mut.WaitOne();
             switch(command)
             {
                 //login username,password
@@ -453,19 +486,32 @@ namespace RendszerfejlesztesServer
                             /*string id = uzenet.Substring(uzenet.IndexOf(" ") + 1, uzenet.IndexOf(",") - uzenet.IndexOf(" ") - 1);
                             string value = uzenet.Substring(uzenet.IndexOf(",") + 1);*/
                             string[] parameters = uzenet.Substring(uzenet.IndexOf(" ") + 1).Split(',');
-
-                            string query = "insert into Bids(itemID,userID,value) VALUES (" + parameters[0] + "," + parameters[2] + "," + parameters[1] + ")";
-                            /*string query = "UPDATE Items SET starting_bid="+ parameters[1] + " WHERE Items.id="+parameters[0];*/
-                            cmd.CommandText = query;
-                            cmd.ExecuteNonQuery();
-                            e.ReplyLine("placebid ");
+                            cmd = new SQLiteCommand("select state from items where id=" + parameters[0], adatb.GetConnection());
+                            
+                            reader = cmd.ExecuteReader();
+                            reader.Read();
+                            if (reader.GetInt32(0) != 0)
+                            {
+                                e.ReplyLine("placebid time");
+                                reader.Close();
+                            }
+                            else
+                            {
+                                reader.Close();
+                                string query = "insert into Bids(itemID,userID,value) VALUES (" + parameters[0] + "," + parameters[2] + "," + parameters[1] + ")";
+                                /*string query = "UPDATE Items SET starting_bid="+ parameters[1] + " WHERE Items.id="+parameters[0];*/
+                                cmd.CommandText = query;
+                                cmd.ExecuteNonQuery();
+                                e.ReplyLine("placebid true");
+                            }
+                                
                         });
                             break;
                     }
                 case "buyout":
                     {
                         txtStatus.Invoke((MethodInvoker)delegate ()
-                        {
+                        {                            
                             txtStatus.AppendText(Environment.NewLine);
                             txtStatus.AppendText(uzenet);
                             txtStatus.AppendText(Environment.NewLine);
@@ -473,11 +519,23 @@ namespace RendszerfejlesztesServer
                             string value = uzenet.Substring(uzenet.IndexOf(",") + 1);*/
                             int clientid = int.Parse(uzenet.Substring(uzenet.IndexOf(",")+1));
                             int termekid = int.Parse(uzenet.Substring(uzenet.IndexOf(" ")+1, uzenet.IndexOf(",") - uzenet.IndexOf(" ")-1));
-
-                            string query = "UPDATE Items SET state=1, vasarloid="+clientid+" WHERE Items.id="+termekid;
-                            cmd.CommandText = query;
-                            cmd.ExecuteNonQuery();
-                            e.ReplyLine("buyout true");
+                            cmd = new SQLiteCommand("select state from items where id=" + termekid, adatb.GetConnection());
+                            reader = cmd.ExecuteReader();
+                            reader.Read();
+                            if(reader.GetInt32(0)!=0)
+                            {
+                                reader.Close();
+                                e.ReplyLine("buyout time");
+                            }
+                            else
+                            {
+                                reader.Close();
+                                string query = "UPDATE Items SET state=2, vasarloid=" + clientid + " WHERE Items.id=" + termekid;
+                                cmd.CommandText = query;
+                                cmd.ExecuteNonQuery();
+                                e.ReplyLine("buyout true");
+                            }
+                            
                         });
                         break;
                     }
@@ -492,6 +550,7 @@ namespace RendszerfejlesztesServer
                     }
                 
             }
+            mut.ReleaseMutex();
          }
         //todo : sajátra ne lehessen bidelni
             /*
@@ -525,6 +584,8 @@ namespace RendszerfejlesztesServer
             System.Net.IPAddress ip = System.Net.IPAddress.Parse("127.0.0.1");
             server.Start(ip, Convert.ToInt32(txtPort.Text));
             txtStatus.Text += "server started\n";
+            Thread t = new Thread(new ThreadStart(CheckExpiredAcutions));
+            t.Start();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -545,6 +606,7 @@ namespace RendszerfejlesztesServer
                 server.Stop();
             }
         }
+        
     }
 
     public class Item

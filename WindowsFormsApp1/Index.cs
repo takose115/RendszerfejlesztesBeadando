@@ -135,8 +135,16 @@ namespace WindowsFormsApp1
             }
             else if(command == "placebid")
             {
-                LoadItem_Request();
-                MessageBox.Show("Bid is placed");
+                string eredmeny = e.MessageString.Substring(0, e.MessageString.Length - 1).Substring(valasz.IndexOf(" ") + 1, 4);
+                if (eredmeny == "true")
+                {
+                    LoadItem_Request();
+                    MessageBox.Show("Bid is placed");
+                }else if(eredmeny == "time")
+                {
+                    LoadItem_Request();
+                    MessageBox.Show("This action is expired!");
+                }                    
             }
         }
 

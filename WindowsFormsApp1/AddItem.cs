@@ -104,7 +104,10 @@ namespace WindowsFormsApp1
                 int startbid = int.Parse(num_start.Value.ToString());
                 int buyout = int.Parse(num_buyout.Value.ToString());
                 string enddate = date_ending.Value.ToString();
+                enddate = enddate.Substring(0, enddate.LastIndexOf(" "));
+                enddate += " "+txtHour.Text.ToString() + ":" + txtMinute.Text.ToString();
                 int type = list_type.SelectedIndex + 1;
+
 
                 byte[] imageArray = ImageToByteArray(picImage.Image);
                 string imageString = Convert.ToBase64String(imageArray);

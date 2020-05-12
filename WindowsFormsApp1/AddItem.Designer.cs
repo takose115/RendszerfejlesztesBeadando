@@ -46,6 +46,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.picImage = new System.Windows.Forms.PictureBox();
+            this.txtHour = new System.Windows.Forms.TextBox();
+            this.txtMinute = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.num_start)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_buyout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picImage)).BeginInit();
@@ -128,7 +131,7 @@
             // 
             this.lab_type.AutoSize = true;
             this.lab_type.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lab_type.Location = new System.Drawing.Point(33, 355);
+            this.lab_type.Location = new System.Drawing.Point(33, 380);
             this.lab_type.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lab_type.Name = "lab_type";
             this.lab_type.Size = new System.Drawing.Size(57, 25);
@@ -150,6 +153,7 @@
             this.date_ending.Name = "date_ending";
             this.date_ending.Size = new System.Drawing.Size(209, 20);
             this.date_ending.TabIndex = 13;
+            this.date_ending.Value = new System.DateTime(2020, 5, 11, 0, 0, 0, 0);
             // 
             // num_start
             // 
@@ -172,7 +176,7 @@
             // list_type
             // 
             this.list_type.FormattingEnabled = true;
-            this.list_type.Location = new System.Drawing.Point(227, 355);
+            this.list_type.Location = new System.Drawing.Point(227, 380);
             this.list_type.Margin = new System.Windows.Forms.Padding(2);
             this.list_type.Name = "list_type";
             this.list_type.Size = new System.Drawing.Size(209, 21);
@@ -229,11 +233,37 @@
             this.picImage.TabIndex = 20;
             this.picImage.TabStop = false;
             // 
+            // txtHour
+            // 
+            this.txtHour.Location = new System.Drawing.Point(288, 345);
+            this.txtHour.Name = "txtHour";
+            this.txtHour.Size = new System.Drawing.Size(30, 20);
+            this.txtHour.TabIndex = 21;
+            // 
+            // txtMinute
+            // 
+            this.txtMinute.Location = new System.Drawing.Point(324, 345);
+            this.txtMinute.Name = "txtMinute";
+            this.txtMinute.Size = new System.Drawing.Size(33, 20);
+            this.txtMinute.TabIndex = 22;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(217, 348);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 23;
+            this.label5.Text = "Ending time:";
+            // 
             // AddItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(480, 565);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtMinute);
+            this.Controls.Add(this.txtHour);
             this.Controls.Add(this.picImage);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -282,5 +312,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox picImage;
+        private System.Windows.Forms.TextBox txtHour;
+        private System.Windows.Forms.TextBox txtMinute;
+        private System.Windows.Forms.Label label5;
     }
 }

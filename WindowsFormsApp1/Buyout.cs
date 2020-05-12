@@ -30,10 +30,15 @@ namespace WindowsFormsApp1
             string command = valasz.Substring(0, valasz.IndexOf(" "));
             if(command=="buyout")
             {
-                string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1, 4);
+                string eredmeny = e.MessageString.Substring(0, e.MessageString.Length - 1).Substring(valasz.IndexOf(" ") + 1, 4);
                 if (eredmeny == "true")
                 {
                     MessageBox.Show("Buyout succesful");
+                    this.Hide();
+                }
+                else if(eredmeny== "time")
+                {
+                    MessageBox.Show("This action has expired!");
                     this.Hide();
                 }
                 else
