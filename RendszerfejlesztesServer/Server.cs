@@ -161,7 +161,7 @@ namespace RendszerfejlesztesServer
                             }
                             catch (Exception ex)
                             {
-                                hibaLabel.Text = ex.ToString();
+                                hibaLabel.Text = "1"+ex.ToString();
                             }
                         });
                         break;
@@ -203,7 +203,7 @@ namespace RendszerfejlesztesServer
                             }
                             catch (Exception ex)
                             {
-                                hibaLabel.Text = ex.ToString();
+                                hibaLabel.Text = "2" + ex.ToString();
                             }
                         });
                         break;
@@ -251,7 +251,7 @@ namespace RendszerfejlesztesServer
                             }
                             catch (Exception ex)
                             {
-                                hibaLabel.Text = ex.ToString();
+                                hibaLabel.Text = "3" + ex.ToString();
                             }
                         });
                         break;
@@ -291,7 +291,7 @@ namespace RendszerfejlesztesServer
                             }
                             catch (Exception ex)
                             {
-                                hibaLabel.Text = ex.ToString();
+                                hibaLabel.Text = "4" + ex.ToString();
                             }
                         });
                         break;
@@ -328,7 +328,7 @@ namespace RendszerfejlesztesServer
                             }
                             catch (Exception ex)
                             {
-                                hibaLabel.Text = ex.ToString();
+                                hibaLabel.Text = "5" + ex.ToString();
                             }
                         });
                         break;
@@ -344,9 +344,9 @@ namespace RendszerfejlesztesServer
 
                             List<NewComment> commentlist = new List<NewComment>();
 
-                            string eredmeny = uzenet.Substring(uzenet.IndexOf(" ") + 1);
+                            string eredmeny = uzenet.Substring(uzenet.IndexOf(",") + 1);
                            
-                            commentlist = JsonNet.Deserialize<List<NewComment>>(eredmeny); //itt baj van 
+                            commentlist = JsonNet.Deserialize<List<NewComment>>(eredmeny); 
 
                             //MessageBox.Show(comment.comment+comment.date+comment.postID.ToString()+comment.userid.ToString());
 
@@ -357,13 +357,43 @@ namespace RendszerfejlesztesServer
                             int a = cmd.ExecuteNonQuery();
                             if (a == 0)
                             {
-                                e.ReplyLine("newComment false");
                                 txtStatus.AppendText("newComment failed");
                             }
                             else
                             {
-                                e.ReplyLine("newComment true "+ commentlist[0].postID.ToString());
                                 txtStatus.AppendText("newComment succesfull");
+                            }
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(uzenet);
+                            txtStatus.AppendText(Environment.NewLine);
+                            try
+                            {
+                                List<Comment> commentlist2 = new List<Comment>();
+
+                                string topicid = uzenet.Substring(uzenet.IndexOf(" ") + 1, uzenet.IndexOf(",")-uzenet.IndexOf(" ")-1);
+
+
+                                cmd = new SQLiteCommand(
+                                "SELECT Comment.comment, Comment.date, Users.username FROM Comment JOIN Users ON Comment.userID = Users.id WHERE Comment.postID =" + topicid, adatb.GetConnection());
+                                reader = cmd.ExecuteReader();
+
+                                while (reader.Read())
+                                {
+
+                                    commentlist2.Add(new Comment(
+
+                                        reader.GetString(0), //comment
+                                        reader.GetString(1), //date     
+                                         reader.GetString(2) //username
+                                        ));
+                                }
+                                var stringjson = JsonNet.Serialize(commentlist2);
+                                e.ReplyLine("actualcommentload " + stringjson);
+                                reader.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                hibaLabel.Text = "4" + ex.ToString();
                             }
                         });
                         break;
@@ -407,7 +437,7 @@ namespace RendszerfejlesztesServer
                             }
                             catch (Exception ex)
                             {
-                                hibaLabel.Text = ex.ToString();
+                                hibaLabel.Text = "6" + ex.ToString();
                             }
                         });
                         break;

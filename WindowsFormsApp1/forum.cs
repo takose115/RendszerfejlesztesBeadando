@@ -114,27 +114,30 @@ namespace WindowsFormsApp1
             }
 
         }
-
         private void topic_open_Click(object sender, EventArgs e, int sql_id)
         {
-            
-            comment f1 = new comment(client, clientid, sql_id);
-            this.Hide();
-            f1.Show();
+                comment f1 = new comment(client, clientid, sql_id);
+                f1.Show();
         }
 
         private void but_cancel_Click(object sender, EventArgs e)
         {
-            Index f1 = new Index(client, clientid);
-            this.Hide();
-            f1.Show();
+            Invoke(new MethodInvoker(delegate ()
+            {
+                Index f1 = new Index(client, clientid);
+                this.Hide();
+                f1.Show();
+            }));
         }
 
         private void but_newtopic_Click(object sender, EventArgs e)
         {
-            AddTopic f1 = new AddTopic(client, clientid);
-            this.Hide();
-            f1.Show();
+            Invoke(new MethodInvoker(delegate ()
+            {
+                AddTopic f1 = new AddTopic(client, clientid);
+                this.Hide();
+                f1.Show();
+            }));
         }
     }
 
