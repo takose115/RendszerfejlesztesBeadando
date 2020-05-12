@@ -113,7 +113,7 @@ namespace WindowsFormsApp1
                 string imageString = Convert.ToBase64String(imageArray);
 
                 List<Item> termekLista = new List<Item>();
-                Item termek = new Item(imageString,clientid, name, startbid, buyout, enddate, type);
+                Item termek = new Item(imageString,clientid, name, buyout, startbid, enddate, type);
                 termekLista.Add(termek);
 
                 string uzenet = "newItem ";

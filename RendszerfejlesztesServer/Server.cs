@@ -10,6 +10,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -475,6 +476,45 @@ namespace RendszerfejlesztesServer
                             reader.Close();
                             cmd.CommandText = "insert into Bids(itemID,userID,value) VALUES (" + itemid + "," + newItem.clientid + "," + newItem.startingBid + ")";
                             cmd.ExecuteNonQuery();
+
+
+                            cmd = new SQLiteCommand("SELECT Email FROM Users JOIN Subscription ON Users.id = Subscription.userID WHERE Subscription.typeID =" + newItem.type, adatb.GetConnection());
+                            reader = cmd.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                string email = reader.GetString(0);
+
+                                MailMessage mail = new MailMessage();
+                                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                                string htmlString = @"
+                                        <html>
+	                                    <head></head>
+	                                    <body>
+		                                    <h1>New Item!</h1>
+		                                    <p>Item name: " + newItem.name+ @" </p>
+		                                    <p>Starting bid: " + newItem.startingBid + @" </p>
+		                                    <p>Buyout price: " + newItem.buyoutPrice + @" </p>
+		                                    <p>Ending date: " + newItem.endDate + @" </p>
+	                                    </body>
+                                    </html>
+                                ";
+
+
+                                mail.From = new MailAddress("utazoszervezo@gmail.com");
+                                mail.To.Add(email);
+                                mail.Subject = "New item!";
+                                mail.IsBodyHtml = true;
+                                mail.Body = htmlString;
+
+                                SmtpServer.Port = 587;
+                                SmtpServer.Credentials = new System.Net.NetworkCredential("utazoszervezo", "Admin100!");
+                                SmtpServer.EnableSsl = true;
+
+                                SmtpServer.Send(mail);
+                            }
+
+
                         });
                         break;
                     }
@@ -566,6 +606,36 @@ namespace RendszerfejlesztesServer
                                 e.ReplyLine("buyout true");
                             }
                             
+                        });
+                        break;
+                    }
+                case "subscribe":
+                    {
+                        txtStatus.Invoke((MethodInvoker)delegate ()
+                        {
+                            txtStatus.AppendText(Environment.NewLine);
+                            txtStatus.AppendText(uzenet);
+                            txtStatus.AppendText(Environment.NewLine);
+                            int clientid = int.Parse(uzenet.Substring(uzenet.IndexOf(",") + 1));
+                            int type = int.Parse(uzenet.Substring(uzenet.IndexOf(" ") + 1, uzenet.IndexOf(",") - uzenet.IndexOf(" ") - 1));
+                            cmd = new SQLiteCommand("SELECT COUNT(userID) FROM Subscription WHERE userID="+clientid+" AND typeID="+type, adatb.GetConnection());
+
+                            reader = cmd.ExecuteReader();
+                            reader.Read();
+                            if (reader.GetInt32(0) != 0)
+                            {
+                                MessageBox.Show("Already subscribed to that type!");
+                                reader.Close();
+                            }
+                            else
+                            {
+                                reader.Close();
+                                string query = "insert into Subscription(typeID,userID) VALUES (" + type + "," + clientid + ")";
+                                cmd.CommandText = query;
+                                cmd.ExecuteNonQuery();
+                                e.ReplyLine("subscribe true");
+                            }
+
                         });
                         break;
                     }

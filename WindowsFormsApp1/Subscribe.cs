@@ -20,6 +20,8 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
 
+            comboBox1.SelectedIndex = 0;
+
             client = clientm;
             clientid = id;
             client.DataReceived += Client_DataReceived;
@@ -31,21 +33,15 @@ namespace WindowsFormsApp1
         {
             string valasz = e.MessageString.Substring(0, e.MessageString.Length - 1);
             string command = valasz.Substring(0, valasz.IndexOf(" "));
-            if (command == "newItem")
+            if (command == "subscribe")
             {
                 string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1, 4);
                 if (eredmeny == "true")
                 {
-                    MessageBox.Show("Upload successful!");
-                    Invoke(new MethodInvoker(delegate ()
-                    {
-                        Index f1 = new Index(client, clientid);
-                        this.Hide();
-                        f1.Show();
-                    }));
+                    MessageBox.Show("Subscribe successful!");
                 }
                 else
-                    MessageBox.Show("Upload failed please try again!");
+                    MessageBox.Show("Subscribe failed please try again!");
             }
         }
 
@@ -59,6 +55,8 @@ namespace WindowsFormsApp1
         private void Button1_Click(object sender, EventArgs e) //subscribe
         {
             int type = comboBox1.SelectedIndex + 1;
+            string uzenet = "subscribe ";
+            client.WriteLineAndGetReply(uzenet + type + "," + clientid, TimeSpan.FromSeconds(0));
         }
     }
 }
