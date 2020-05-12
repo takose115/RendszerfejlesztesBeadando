@@ -185,6 +185,13 @@ namespace WindowsFormsApp1
             this.Hide();
             f1.Show();
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Subscribe f1 = new Subscribe(client, clientid);
+            this.Hide();
+            f1.Show();
+        }
     }
     public class Item
     {

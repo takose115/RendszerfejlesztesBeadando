@@ -122,6 +122,12 @@
     <Compile Include="Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
+    <Compile Include="Subscribe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Subscribe.Designer.cs">
+      <DependentUpon>Subscribe.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AddItem.resx">
       <DependentUpon>AddItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -154,6 +160,9 @@
     </Compile>
     <EmbeddedResource Include="Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Subscribe.resx">
+      <DependentUpon>Subscribe.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
