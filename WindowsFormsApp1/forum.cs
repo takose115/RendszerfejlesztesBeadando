@@ -28,6 +28,8 @@ namespace WindowsFormsApp1
             client.DataReceived += Client_DataReceived;
             LoadTopic_Request();
 
+            
+
         }
 
         SimpleTcpClient client;
@@ -47,12 +49,14 @@ namespace WindowsFormsApp1
                 throw new Exception("Elements number doesn't match!" + panel.ColumnCount + " " + rowElements.Length);
             panel.RowCount++;
             panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            
             for (int i = 0; i < rowElements.Length; i++)
             {
                 //MessageBox.Show(rowElements[i]);
                 //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                 Label lb = new Label();
                 lb.Text = rowElements[i];
+                lb.BackColor = System.Drawing.Color.Transparent; 
                 lb.Click += new EventHandler((sender, e) => topic_open_Click(sender, e, sql_id));
                 panel.Controls.Add(lb, i, panel.RowCount - 1);
 
@@ -83,18 +87,26 @@ namespace WindowsFormsApp1
                         throw new Exception("Elements number doesn't match!");
                     for (int i = 0; i < rowElements.Length; i++)
                     {
-                        panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                        Label lb = new Label();
+                        lb.Text = rowElements[i];
+                        lb.BackColor = System.Drawing.Color.Transparent;                 
+                        panel.Controls.Add(lb, i, panel.RowCount - 1);
+                        //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                     }
 
-                    panel.RowCount = 2;
+                    /*panel.RowCount = 2;
                     string[] uressor = { "   ", "   ", "   " };
 
                     if (panel.ColumnCount != uressor.Length)
                         throw new Exception("Elements number doesn't match!");
                     for (int i = 0; i < uressor.Length; i++)
                     {
-                        panel.Controls.Add(new Label() { Text = uressor[i] }, i, panel.RowCount - 1);
-                    }
+                        Label lb = new Label();
+                        lb.Text = uressor[i];
+                        lb.BackColor = System.Drawing.Color.Transparent;
+                        panel.Controls.Add(lb, i, panel.RowCount - 1);
+                        //panel.Controls.Add(new Label() { Text = uressor[i] }, i, panel.RowCount - 1);
+                    }*/
 
                     //így oldom meg a spacet a cimsor alatt
 
@@ -138,6 +150,16 @@ namespace WindowsFormsApp1
                 this.Hide();
                 f1.Show();
             }));
+        }
+
+        private void panel_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        {
+            if (e.Row == 0)
+                e.Graphics.FillRectangle(Brushes.SandyBrown, e.CellBounds);
+            if (e.Row % 2 == 0 && e.Row > 0)
+                e.Graphics.FillRectangle(Brushes.Beige, e.CellBounds);
+            else if (e.Row != 0)
+                e.Graphics.FillRectangle(Brushes.WhiteSmoke, e.CellBounds);
         }
     }
 

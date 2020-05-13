@@ -22,6 +22,12 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
 
+            panel.HorizontalScroll.Maximum = 0;
+            panel.VerticalScroll.Maximum = 2500;
+
+
+
+
             client = clientm;
             clientid = id;
             string topicid = sql_id.ToString();
@@ -32,6 +38,7 @@ namespace WindowsFormsApp1
             Thread.Sleep(100);
             //MessageBox.Show("ide valamiért kell egy ilyen stop");
             LoadActualComments_Request(lab_titok.Text);
+            
 
         }
         private static Mutex mut = new Mutex();
@@ -46,6 +53,7 @@ namespace WindowsFormsApp1
 
         private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements)
         {
+            //MessageBox.Show(rowElements[1]);
             if (panel.ColumnCount != rowElements.Length)
                 throw new Exception("Elements number doesn't match!" + panel.ColumnCount + " " + rowElements.Length);
             panel.RowCount++;
@@ -54,7 +62,10 @@ namespace WindowsFormsApp1
             {
                 //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                 Label lb = new Label();
-                lb.Text = rowElements[i];    
+                //MessageBox.Show(rowElements[i]);
+                lb.Text = rowElements[i];
+                lb.BackColor = System.Drawing.Color.Transparent;
+                lb.Width= 300;
                 panel.Controls.Add(lb, i, panel.RowCount - 1);
 
 
@@ -72,7 +83,11 @@ namespace WindowsFormsApp1
             {
                 List<NagyTopic> topiclist = new List<NagyTopic>();
                 string eredmeny = valasz.Substring(valasz.IndexOf(" ") + 1);
+                //MessageBox.Show(eredmeny);
                 topiclist = JsonNet.Deserialize<List<NagyTopic>>(eredmeny);
+
+                //MessageBox.Show(topiclist[0].desc);
+
                 if (lab_title.InvokeRequired)
                 {
                     lab_title.Invoke((MethodInvoker)delegate ()
@@ -88,12 +103,12 @@ namespace WindowsFormsApp1
                 {
                     lab_desc.Invoke((MethodInvoker)delegate ()
                     {
-                        lab_desc.Text = topiclist[0].title;
+                        lab_desc.Text = topiclist[0].desc;
                     });
                 }
                 else
                 {
-                    lab_desc.Text = topiclist[0].title;
+                    lab_desc.Text = topiclist[0].desc;
                 }
             }
             else if (command == "actualcommentload")
@@ -109,16 +124,17 @@ namespace WindowsFormsApp1
                         for (int i = panel.Controls.Count - 1; i >= 1; --i)
                             panel.Controls[i].Dispose();
                         panel.Controls.Clear();
-                        panel.RowCount = 1;
-                        string[] rowElements = { "Username", "Comment", "Date", };
+                        //panel.RowCount = 1;
+                        string[] rowElements = { " ", " ", " ", }; ;
+                        //panel.Controls.Add(new Label() { Text = "  " }, i, panel.RowCount - 1);
                         if (panel.ColumnCount != rowElements.Length)
                             throw new Exception("Elements number doesn't match!");
-                        for (int i = 0; i < rowElements.Length; i++)
+                        /*for (int i = 0; i < rowElements.Length; i++)
                         {
                             panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
-                        }
+                        }*/
 
-                        panel.RowCount = 2;
+                        /*panel.RowCount = 2;
                         string[] uressor = { "   ", "   ", "   " };
 
                         if (panel.ColumnCount != uressor.Length)
@@ -126,7 +142,7 @@ namespace WindowsFormsApp1
                         for (int i = 0; i < uressor.Length; i++)
                         {
                             panel.Controls.Add(new Label() { Text = uressor[i] }, i, panel.RowCount - 1);
-                        }
+                        }*/
 
                         //space a címsor alatt 
 
@@ -151,7 +167,7 @@ namespace WindowsFormsApp1
                         panel.Controls[i].Dispose();
                     panel.Controls.Clear();
                     panel.RowCount = 1;
-                    string[] rowElements = { "Username", "Comment", "Date", };
+                    string[] rowElements = { " ", " ", " ", };
                     if (panel.ColumnCount != rowElements.Length)
                         throw new Exception("Elements number doesn't match!");
                     for (int i = 0; i < rowElements.Length; i++)
@@ -235,7 +251,14 @@ namespace WindowsFormsApp1
 
         }
 
-        
+        private void panel_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        {
+            
+            if (e.Row % 2 == 0)
+                e.Graphics.FillRectangle(Brushes.WhiteSmoke, e.CellBounds);
+            else 
+                e.Graphics.FillRectangle(Brushes.Beige, e.CellBounds);
+        }
     }
 
     public class NagyTopic

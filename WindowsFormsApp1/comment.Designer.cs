@@ -40,9 +40,9 @@
             // 
             // but_cancel
             // 
-            this.but_cancel.Location = new System.Drawing.Point(2458, 1126);
+            this.but_cancel.Location = new System.Drawing.Point(993, 1117);
             this.but_cancel.Name = "but_cancel";
-            this.but_cancel.Size = new System.Drawing.Size(87, 38);
+            this.but_cancel.Size = new System.Drawing.Size(102, 51);
             this.but_cancel.TabIndex = 0;
             this.but_cancel.Text = "Cancel";
             this.but_cancel.UseVisualStyleBackColor = true;
@@ -50,9 +50,9 @@
             // 
             // but_comment
             // 
-            this.but_comment.Location = new System.Drawing.Point(2323, 1126);
+            this.but_comment.Location = new System.Drawing.Point(872, 1117);
             this.but_comment.Name = "but_comment";
-            this.but_comment.Size = new System.Drawing.Size(101, 38);
+            this.but_comment.Size = new System.Drawing.Size(101, 51);
             this.but_comment.TabIndex = 1;
             this.but_comment.Text = "Send";
             this.but_comment.UseVisualStyleBackColor = true;
@@ -63,7 +63,7 @@
             this.lab_title.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lab_title.Location = new System.Drawing.Point(48, 42);
             this.lab_title.Name = "lab_title";
-            this.lab_title.Size = new System.Drawing.Size(2206, 67);
+            this.lab_title.Size = new System.Drawing.Size(977, 67);
             this.lab_title.TabIndex = 2;
             this.lab_title.Text = "label1";
             // 
@@ -72,21 +72,22 @@
             this.lab_desc.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lab_desc.Location = new System.Drawing.Point(50, 109);
             this.lab_desc.Name = "lab_desc";
-            this.lab_desc.Size = new System.Drawing.Size(2455, 111);
+            this.lab_desc.Size = new System.Drawing.Size(975, 186);
             this.lab_desc.TabIndex = 3;
             this.lab_desc.Text = "label2";
             // 
             // txt_comment
             // 
-            this.txt_comment.Location = new System.Drawing.Point(52, 1132);
+            this.txt_comment.Location = new System.Drawing.Point(52, 991);
+            this.txt_comment.Multiline = true;
             this.txt_comment.Name = "txt_comment";
-            this.txt_comment.Size = new System.Drawing.Size(2234, 26);
+            this.txt_comment.Size = new System.Drawing.Size(1043, 97);
             this.txt_comment.TabIndex = 4;
             // 
             // lab_titok
             // 
             this.lab_titok.AutoSize = true;
-            this.lab_titok.Location = new System.Drawing.Point(2477, 1044);
+            this.lab_titok.Location = new System.Drawing.Point(1086, 42);
             this.lab_titok.Name = "lab_titok";
             this.lab_titok.Size = new System.Drawing.Size(51, 20);
             this.lab_titok.TabIndex = 5;
@@ -99,23 +100,25 @@
             this.panel.AutoScroll = true;
             this.panel.AutoSize = true;
             this.panel.ColumnCount = 3;
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.82832F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 89.17168F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 289F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.22222F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.55556F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.22222F));
             this.panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.panel.Location = new System.Drawing.Point(52, 316);
+            this.panel.Location = new System.Drawing.Point(63, 344);
+            this.panel.MaximumSize = new System.Drawing.Size(1100, 550);
             this.panel.Name = "panel";
             this.panel.RowCount = 2;
-            this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.36082F));
-            this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.63918F));
-            this.panel.Size = new System.Drawing.Size(2451, 102);
+            this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 49.15254F));
+            this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.84746F));
+            this.panel.Size = new System.Drawing.Size(1032, 104);
             this.panel.TabIndex = 6;
+            this.panel.CellPaint += new System.Windows.Forms.TableLayoutCellPaintEventHandler(this.panel_CellPaint);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(52, 258);
+            this.label1.Location = new System.Drawing.Point(57, 295);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(163, 36);
             this.label1.TabIndex = 7;
@@ -125,7 +128,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2582, 1197);
+            this.ClientSize = new System.Drawing.Size(1175, 1201);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.lab_titok);
@@ -134,6 +137,9 @@
             this.Controls.Add(this.lab_title);
             this.Controls.Add(this.but_comment);
             this.Controls.Add(this.but_cancel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "comment";
             this.Text = "/";
             this.Load += new System.EventHandler(this.comment_Load);

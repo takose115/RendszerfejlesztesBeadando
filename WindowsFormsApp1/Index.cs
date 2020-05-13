@@ -105,6 +105,7 @@ namespace WindowsFormsApp1
                 if(i==rowElements.Length-3)
                 {
                     TextBox tx = new TextBox();
+                    //tx.BackColor = System.Drawing.Color.Transparent;
                     tx.Name = "bidtxt_" + sql_id; 
                     panel.Controls.Add(tx, i, panel.RowCount - 1);
                 }
@@ -112,6 +113,7 @@ namespace WindowsFormsApp1
                 {
                     Button bn = new Button();
                     bn.Text = "Place bid";
+                    
                     bn.Name = "bidbtn_" + panel.RowCount;
                     bn.Click += new EventHandler(PlaceBid);
                     panel.Controls.Add(bn, i, panel.RowCount - 1);
@@ -133,7 +135,12 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
-                    panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                    //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                    Label lb = new Label();
+                    lb.BackColor = System.Drawing.Color.Transparent;
+                    lb.Text = rowElements[i];
+                    panel.Controls.Add(lb, i, panel.RowCount - 1);
+                    
                 }                
             }
 
@@ -160,7 +167,11 @@ namespace WindowsFormsApp1
                         throw new Exception("Elements number doesn't match!");
                     for (int i = 0; i < rowElements.Length; i++)
                     {
-                        panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                        //panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
+                        Label lb = new Label();
+                        lb.BackColor = System.Drawing.Color.Transparent;
+                        lb.Text = rowElements[i];
+                        panel.Controls.Add(lb, i, panel.RowCount - 1);
                     }
                     foreach (Item it in itemlist)
                     {
@@ -270,10 +281,13 @@ namespace WindowsFormsApp1
 
         private void panel_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
         {
-            /*if (e.Row %2 == 1)
-                e.Graphics.FillRectangle(Brushes.LightGray, e.CellBounds);
-            else
-                e.Graphics.FillRectangle(Brushes.White, e.CellBounds);*/
+            if (e.Row == 0)
+                e.Graphics.FillRectangle(Brushes.SandyBrown, e.CellBounds);
+            if (e.Row % 2 == 0 && e.Row > 0)
+                e.Graphics.FillRectangle(Brushes.Beige, e.CellBounds);
+            else if (e.Row != 0)
+                e.Graphics.FillRectangle(Brushes.WhiteSmoke, e.CellBounds);
+           
         }
     }
     public class Item
