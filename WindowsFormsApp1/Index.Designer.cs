@@ -35,6 +35,13 @@
             this.panel = new System.Windows.Forms.TableLayoutPanel();
             this.but_forum = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.MinTextBox = new System.Windows.Forms.TextBox();
+            this.MaxTextbox = new System.Windows.Forms.TextBox();
+            this.list_type = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SignOutBtn
@@ -66,7 +73,7 @@
             // 
             // SearchButton
             // 
-            this.SearchButton.Location = new System.Drawing.Point(983, 264);
+            this.SearchButton.Location = new System.Drawing.Point(983, 538);
             this.SearchButton.Name = "SearchButton";
             this.SearchButton.Size = new System.Drawing.Size(75, 23);
             this.SearchButton.TabIndex = 4;
@@ -99,7 +106,7 @@
             // but_forum
             // 
             this.but_forum.Location = new System.Drawing.Point(983, 168);
-            this.but_forum.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.but_forum.Margin = new System.Windows.Forms.Padding(2);
             this.but_forum.Name = "but_forum";
             this.but_forum.Size = new System.Drawing.Size(75, 22);
             this.but_forum.TabIndex = 5;
@@ -117,11 +124,76 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(974, 276);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Minimum ár:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(974, 327);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(66, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Maximum ár:";
+            // 
+            // MinTextBox
+            // 
+            this.MinTextBox.Location = new System.Drawing.Point(975, 292);
+            this.MinTextBox.Name = "MinTextBox";
+            this.MinTextBox.Size = new System.Drawing.Size(100, 20);
+            this.MinTextBox.TabIndex = 9;
+            // 
+            // MaxTextbox
+            // 
+            this.MaxTextbox.Location = new System.Drawing.Point(975, 343);
+            this.MaxTextbox.Name = "MaxTextbox";
+            this.MaxTextbox.Size = new System.Drawing.Size(100, 20);
+            this.MaxTextbox.TabIndex = 10;
+            // 
+            // list_type
+            // 
+            this.list_type.FormattingEnabled = true;
+            this.list_type.Location = new System.Drawing.Point(968, 407);
+            this.list_type.Name = "list_type";
+            this.list_type.Size = new System.Drawing.Size(121, 21);
+            this.list_type.TabIndex = 11;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(974, 211);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Kulcsszó";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(974, 391);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Típus";
+            // 
             // Index
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1101, 616);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.list_type);
+            this.Controls.Add(this.MaxTextbox);
+            this.Controls.Add(this.MinTextBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.but_forum);
             this.Controls.Add(this.panel);
@@ -145,5 +217,12 @@
         private System.Windows.Forms.TableLayoutPanel panel;
         private System.Windows.Forms.Button but_forum;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox MinTextBox;
+        private System.Windows.Forms.TextBox MaxTextbox;
+        private System.Windows.Forms.ComboBox list_type;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }

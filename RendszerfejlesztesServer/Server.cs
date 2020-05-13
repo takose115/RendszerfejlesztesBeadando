@@ -408,11 +408,65 @@ namespace RendszerfejlesztesServer
                             txtStatus.AppendText(Environment.NewLine);
                             try
                             {
+                                //uzenet: "search" keyword min max type
+                                string[] str = uzenet.Split(' ');
                                 List<Item> itemList = new List<Item>();
 
-                                string keyword = uzenet.Substring(uzenet.IndexOf(" ") + 1);
+                                string keyword = str[1];
+                                string min = str[2];
+                                string max = str[3];
+                                string type = str[4];
+                                string[] whereQuery = { "", "", "", ""};
+                                int feltSum = 0;
+                                int havingSum = 0;
+                                if(keyword != "_")
+                                {
+                                    whereQuery[0] = "items.name LIKE '%" + keyword + "%'";
+                                    feltSum++;
+                                }
+                                if(min != "_")
+                                {
+                                    whereQuery[1] = "max(Bids.value) > " + min;
+                                    havingSum++;
+                                }
+                                if(max != "_")
+                                {
+                                    whereQuery[2] = "max(Bids.value) < " + max;
+                                    havingSum++;
+                                }
+                                if (type != "_")
+                                {
+                                    whereQuery[3] = "Types.name='"+type+"'";
+                                    feltSum++;
+                                }
+                                string queryString = "SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id WHERE state=0";
 
-                                cmd = new SQLiteCommand("SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%' and state=0 GROUP BY items.id", adatb.GetConnection());
+                                if (feltSum==1)
+                                {
+                                    
+                                    queryString += " AND "+whereQuery[0] + whereQuery[3];
+                                }
+                                else if(feltSum==2)
+                                {
+                                    queryString += " AND " + whereQuery[0] +" AND "+ whereQuery[3];
+                                }
+
+                                queryString += " GROUP BY items.id";
+
+                                if (havingSum == 1)
+                                {
+
+                                    queryString += " HAVING " + whereQuery[1] + whereQuery[2];
+                                }
+                                else if (havingSum == 2)
+                                {
+                                    queryString += " HAVING " + whereQuery[1] + " AND " + whereQuery[2];
+                                }
+
+
+                                //cmd = new SQLiteCommand("SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where items.name LIKE '%" + keyword + "%' and state=0 GROUP BY items.id", adatb.GetConnection());
+                                cmd = new SQLiteCommand(queryString, adatb.GetConnection());
+
                                 reader = cmd.ExecuteReader();
                                 while (reader.Read())
                                 {

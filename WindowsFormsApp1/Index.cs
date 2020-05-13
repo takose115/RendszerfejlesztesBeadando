@@ -22,6 +22,11 @@ namespace WindowsFormsApp1
             clientid = id;
             client.DataReceived += Client_DataReceived;
             LoadItem_Request();
+
+            list_type.Items.Add("");
+            list_type.Items.Add("TV");
+            list_type.Items.Add("Telefon");
+            list_type.Items.Add("Autó");
         }
         SimpleTcpClient client;
         int clientid;
@@ -174,8 +179,28 @@ namespace WindowsFormsApp1
 
     private void SearchButton_Click(object sender, EventArgs e)
     {
+        
         string keyword = SearchTextBox.Text.ToString();
-        string uzenet = "search " + keyword;
+        if(string.IsNullOrEmpty(keyword))
+            {
+                keyword = "_";
+            }
+        string min = MinTextBox.Text.ToString();
+            if (string.IsNullOrEmpty(min))
+            {
+                min = "_";
+            }
+        string max = MaxTextbox.Text.ToString();
+            if (string.IsNullOrEmpty(max))
+            {
+                max = "_";
+            }
+            string type = list_type.Text;
+            if (string.IsNullOrEmpty(type))
+            {
+                type = "_";
+            }
+            string uzenet = "search " + keyword + " " + min +" "+max+" "+type;
         client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
     }
 
