@@ -42,11 +42,13 @@
             this.list_type = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.txtTime = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SignOutBtn
             // 
-            this.SignOutBtn.Location = new System.Drawing.Point(983, 53);
+            this.SignOutBtn.Location = new System.Drawing.Point(1096, 53);
             this.SignOutBtn.Name = "SignOutBtn";
             this.SignOutBtn.Size = new System.Drawing.Size(75, 23);
             this.SignOutBtn.TabIndex = 0;
@@ -56,7 +58,7 @@
             // 
             // AddItemBtn
             // 
-            this.AddItemBtn.Location = new System.Drawing.Point(983, 126);
+            this.AddItemBtn.Location = new System.Drawing.Point(1096, 126);
             this.AddItemBtn.Name = "AddItemBtn";
             this.AddItemBtn.Size = new System.Drawing.Size(75, 23);
             this.AddItemBtn.TabIndex = 1;
@@ -66,14 +68,14 @@
             // 
             // SearchTextBox
             // 
-            this.SearchTextBox.Location = new System.Drawing.Point(974, 230);
+            this.SearchTextBox.Location = new System.Drawing.Point(1087, 230);
             this.SearchTextBox.Name = "SearchTextBox";
             this.SearchTextBox.Size = new System.Drawing.Size(93, 20);
             this.SearchTextBox.TabIndex = 3;
             // 
             // SearchButton
             // 
-            this.SearchButton.Location = new System.Drawing.Point(983, 538);
+            this.SearchButton.Location = new System.Drawing.Point(1096, 538);
             this.SearchButton.Name = "SearchButton";
             this.SearchButton.Size = new System.Drawing.Size(75, 23);
             this.SearchButton.TabIndex = 4;
@@ -84,28 +86,30 @@
             // panel
             // 
             this.panel.AutoScroll = true;
+            this.panel.BackColor = System.Drawing.Color.White;
             this.panel.ColumnCount = 10;
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.85254F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721077F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.009011F));
-            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.090913F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.85344F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 7.720249F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 7.720249F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 7.720499F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 7.720499F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.72057F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721704F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.721704F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.009593F));
+            this.panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.0915F));
             this.panel.Location = new System.Drawing.Point(36, 53);
             this.panel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.panel.Name = "panel";
             this.panel.RowCount = 1;
             this.panel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.panel.Size = new System.Drawing.Size(885, 519);
+            this.panel.Size = new System.Drawing.Size(1019, 519);
             this.panel.TabIndex = 0;
+            this.panel.CellPaint += new System.Windows.Forms.TableLayoutCellPaintEventHandler(this.panel_CellPaint);
             // 
             // but_forum
             // 
-            this.but_forum.Location = new System.Drawing.Point(983, 168);
+            this.but_forum.Location = new System.Drawing.Point(1096, 168);
             this.but_forum.Margin = new System.Windows.Forms.Padding(2);
             this.but_forum.Name = "but_forum";
             this.but_forum.Size = new System.Drawing.Size(75, 22);
@@ -116,7 +120,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(965, 90);
+            this.button1.Location = new System.Drawing.Point(1078, 90);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(110, 23);
             this.button1.TabIndex = 6;
@@ -127,7 +131,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(974, 276);
+            this.label1.Location = new System.Drawing.Point(1087, 276);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 13);
             this.label1.TabIndex = 7;
@@ -136,7 +140,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(974, 327);
+            this.label2.Location = new System.Drawing.Point(1087, 327);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 13);
             this.label2.TabIndex = 8;
@@ -144,14 +148,14 @@
             // 
             // MinTextBox
             // 
-            this.MinTextBox.Location = new System.Drawing.Point(975, 292);
+            this.MinTextBox.Location = new System.Drawing.Point(1088, 292);
             this.MinTextBox.Name = "MinTextBox";
             this.MinTextBox.Size = new System.Drawing.Size(100, 20);
             this.MinTextBox.TabIndex = 9;
             // 
             // MaxTextbox
             // 
-            this.MaxTextbox.Location = new System.Drawing.Point(975, 343);
+            this.MaxTextbox.Location = new System.Drawing.Point(1088, 343);
             this.MaxTextbox.Name = "MaxTextbox";
             this.MaxTextbox.Size = new System.Drawing.Size(100, 20);
             this.MaxTextbox.TabIndex = 10;
@@ -159,7 +163,7 @@
             // list_type
             // 
             this.list_type.FormattingEnabled = true;
-            this.list_type.Location = new System.Drawing.Point(968, 407);
+            this.list_type.Location = new System.Drawing.Point(1081, 407);
             this.list_type.Name = "list_type";
             this.list_type.Size = new System.Drawing.Size(121, 21);
             this.list_type.TabIndex = 11;
@@ -167,7 +171,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(974, 211);
+            this.label3.Location = new System.Drawing.Point(1087, 211);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 13);
             this.label3.TabIndex = 12;
@@ -176,17 +180,38 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(974, 391);
+            this.label4.Location = new System.Drawing.Point(1087, 391);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 13;
             this.label4.Text = "Típus";
             // 
+            // txtTime
+            // 
+            this.txtTime.AutoSize = true;
+            this.txtTime.Location = new System.Drawing.Point(935, 13);
+            this.txtTime.Name = "txtTime";
+            this.txtTime.Size = new System.Drawing.Size(0, 13);
+            this.txtTime.TabIndex = 14;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.Orange;
+            this.label5.Location = new System.Drawing.Point(488, 26);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(506, 15);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Only premium users can bid on items where the dates are written in this color!";
+            // 
             // Index
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1101, 616);
+            this.ClientSize = new System.Drawing.Size(1229, 614);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtTime);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.list_type);
@@ -224,5 +249,7 @@
         private System.Windows.Forms.ComboBox list_type;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label txtTime;
+        private System.Windows.Forms.Label label5;
     }
 }

@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,6 +28,44 @@ namespace WindowsFormsApp1
             list_type.Items.Add("TV");
             list_type.Items.Add("Telefon");
             list_type.Items.Add("Autó");
+            Thread t = new Thread(new ThreadStart(timer));
+            t.Start();
+        }
+        bool manuammutex = false;
+        public void timer()
+        {
+            while(true)
+            {
+                Thread.Sleep(1000);
+                DateTime now = DateTime.Now;
+                manuammutex = true;
+                try
+                {
+                    txtTime.Invoke((MethodInvoker)delegate ()
+                    {
+                        txtTime.Text = now.ToString();
+                        for(int i=1;i<panel.RowCount;i++)
+                        {
+                            Control ctr = panel.GetControlFromPosition(5, i);
+                            string temp=ctr.Text;
+                            DateTime tempdate = DateTime.Parse(temp + ":59");
+                            if(tempdate<now)
+                            {
+                                if ((now-tempdate).TotalSeconds < 60)
+                                    ctr.ForeColor = Color.Orange;
+                                else
+                                    ctr.ForeColor = Color.Red;
+                            }
+                        }
+                       
+                    });
+                }catch(Exception e)
+                {
+                    break;
+                }
+                
+            }
+            
         }
         SimpleTcpClient client;
         int clientid;
@@ -39,6 +78,8 @@ namespace WindowsFormsApp1
             int sqlid = int.Parse(ctr.Name.Substring(7));
             string uzenet = "placebid " + sqlid + "," + ctr.Text + "," +clientid;
             client.WriteLineAndGetReply(uzenet, TimeSpan.FromSeconds(0));
+            Thread.Sleep(500);
+            LoadItem_Request();
         }
 
         public void Buyout(object sender, EventArgs e)
@@ -95,6 +136,7 @@ namespace WindowsFormsApp1
                     panel.Controls.Add(new Label() { Text = rowElements[i] }, i, panel.RowCount - 1);
                 }                
             }
+
         }
                
         private void Client_DataReceived(object sender, SimpleTCP.Message e)
@@ -134,7 +176,7 @@ namespace WindowsFormsApp1
                                 "",
                                 ""
                         };                        
-                        AddRowToPanel(panel, row,it.sql_id);
+                        AddRowToPanel(panel, row,it.sql_id);                        
                     }                    
                 }));
             }
@@ -143,12 +185,20 @@ namespace WindowsFormsApp1
                 string eredmeny = e.MessageString.Substring(0, e.MessageString.Length - 1).Substring(valasz.IndexOf(" ") + 1, 4);
                 if (eredmeny == "true")
                 {
-                    LoadItem_Request();
-                    MessageBox.Show("Bid is placed");
+                    if(manuammutex)
+                    {
+                        MessageBox.Show("Bid is placed");
+                        manuammutex = false;
+                    }
+                    
                 }else if(eredmeny == "time")
                 {
-                    LoadItem_Request();
-                    MessageBox.Show("This action is expired!");
+                    if(manuammutex)
+                    {
+                        MessageBox.Show("You cannot place a bid on this item anymore!");
+                        manuammutex = false;
+                    }
+                    
                 }                    
             }
         }
@@ -159,13 +209,13 @@ namespace WindowsFormsApp1
             client.Dispose();
         Login f1 = new Login();
         this.Hide();
+            f1.Show();
     }
 
     private void AddItemBtn_Click(object sender, EventArgs e)
     {
         AddItem f1 = new AddItem(client, clientid);
-        this.Hide();
-        f1.Show();
+            f1.ShowDialog();
     }
 
         
@@ -216,6 +266,14 @@ namespace WindowsFormsApp1
             Subscribe f1 = new Subscribe(client, clientid);
             this.Hide();
             f1.Show();
+        }
+
+        private void panel_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        {
+            /*if (e.Row %2 == 1)
+                e.Graphics.FillRectangle(Brushes.LightGray, e.CellBounds);
+            else
+                e.Graphics.FillRectangle(Brushes.White, e.CellBounds);*/
         }
     }
     public class Item

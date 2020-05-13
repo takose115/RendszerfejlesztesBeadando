@@ -35,7 +35,7 @@ namespace WindowsFormsApp1
             list_type.Items.Add("3. Autó");
 
             string rrr = text_name.Text;
-
+            date_ending.Value = DateTime.Now;
             client = clientm;
             clientid = id;
             client.DataReceived += Client_DataReceived;
@@ -91,9 +91,7 @@ namespace WindowsFormsApp1
 
         private void BackBtn_Click(object sender, EventArgs e)
         {
-            Index f1 = new Index(client, clientid);
-            this.Hide();
-            f1.Show();
+            this.Close();
         }
 
         private void SendBtn_Click(object sender, EventArgs e)

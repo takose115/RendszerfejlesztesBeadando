@@ -239,6 +239,7 @@
             this.txtHour.Name = "txtHour";
             this.txtHour.Size = new System.Drawing.Size(30, 20);
             this.txtHour.TabIndex = 21;
+            this.txtHour.Text = "23";
             // 
             // txtMinute
             // 
@@ -246,6 +247,7 @@
             this.txtMinute.Name = "txtMinute";
             this.txtMinute.Size = new System.Drawing.Size(33, 20);
             this.txtMinute.TabIndex = 22;
+            this.txtMinute.Text = "59";
             // 
             // label5
             // 

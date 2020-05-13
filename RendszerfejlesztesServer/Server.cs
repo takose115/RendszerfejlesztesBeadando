@@ -42,19 +42,29 @@ namespace RendszerfejlesztesServer
                 mut.WaitOne();
                 string enddate;
                 int id;
-                cmd = new SQLiteCommand("Select id, end_date from Items", adatb.GetConnection());
+                cmd = new SQLiteCommand("select items.id, end_date, bids.userID, max(value) from bids, items where bids.itemID=items.id and (state=0 or state=1) group by items.id ", adatb.GetConnection());
                 reader2= cmd.ExecuteReader();
                 while (reader2.Read())
                 {
                     id = reader2.GetInt32(0);
                     enddate = reader2.GetString(1);
                     DateTime now = DateTime.Now;
-                    DateTime endingdate = DateTime.Parse(enddate);
+                    DateTime endingdate = DateTime.Parse(enddate+":59");
+                    double dif = (now - endingdate).TotalSeconds;
                     if (endingdate < now)
                     {
+                        if(dif<60)
+                        {
+                            cmd2.CommandText = "update items set state=1 where id=" + id;
+                            cmd2.ExecuteNonQuery();
+                        }else
+                        {
+                            cmd2.CommandText = "update items set state=3 where id=" + id;
+                            cmd2.ExecuteNonQuery();
+                            cmd2.CommandText = "insert into winners (userid,termekid,bid_amount) values ("+reader2.GetInt32(2)+","+reader2.GetInt32(0)+","+reader2.GetInt32(3)+")";
+                            cmd2.ExecuteNonQuery();
+                        }
                         
-                        cmd2.CommandText = "update items set state=1 where id=" + id;
-                        cmd2.ExecuteNonQuery();
                     }
                 }
                 reader2.Close();
@@ -63,7 +73,7 @@ namespace RendszerfejlesztesServer
             }
             
         }
-
+        //state : 0 vehető, 1 premium vehető, 2 megvett, 3 lejárt
         private void Form1_Load(object sender, EventArgs e)
         {
             server = new SimpleTcpServer();
@@ -147,7 +157,7 @@ namespace RendszerfejlesztesServer
                             txtStatus.AppendText(Environment.NewLine);
                             try
                             {
-                                cmd.CommandText = "INSERT INTO Users(username, password, permission, premium, email) VALUES('" + username + "','" + password + "', 1, 1,'" + email + "')";
+                                cmd.CommandText = "INSERT INTO Users(username, password, permission, premium, email) VALUES('" + username + "','" + password + "', 1, 0,'" + email + "')";
                                 int a = cmd.ExecuteNonQuery();
                                 if (a == 0)
                                 {
@@ -179,7 +189,7 @@ namespace RendszerfejlesztesServer
                                 List<Item> itemList = new List<Item>();
 
                                 cmd = new SQLiteCommand("" +
-                                "SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where state=0 GROUP BY items.id", adatb.GetConnection());                                
+                                "SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id where state=0 or state=1 GROUP BY items.id", adatb.GetConnection());                                
                                 reader = cmd.ExecuteReader();
                                 while (reader.Read())
                                 {
@@ -439,7 +449,7 @@ namespace RendszerfejlesztesServer
                                     whereQuery[3] = "Types.name='"+type+"'";
                                     feltSum++;
                                 }
-                                string queryString = "SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id WHERE state=0";
+                                string queryString = "SELECT items.image,items.name, Types.name, Users.username ,buyout, end_date, max(bids.value), items.id FROM Items JOIN Bids ON items.id = Bids.itemID JOIN Types ON items.type = Types.id JOIN Users ON items.sellerid = Users.id WHERE (state=0 or state=1)";
 
                                 if (feltSum==1)
                                 {
@@ -610,11 +620,18 @@ namespace RendszerfejlesztesServer
                             /*string id = uzenet.Substring(uzenet.IndexOf(" ") + 1, uzenet.IndexOf(",") - uzenet.IndexOf(" ") - 1);
                             string value = uzenet.Substring(uzenet.IndexOf(",") + 1);*/
                             string[] parameters = uzenet.Substring(uzenet.IndexOf(" ") + 1).Split(',');
-                            cmd = new SQLiteCommand("select state from items where id=" + parameters[0], adatb.GetConnection());
-                            
+                            //premiumcheck
+                            bool premium = false;
+                            cmd = new SQLiteCommand("select premium from users where id=" + parameters[2], adatb.GetConnection());
                             reader = cmd.ExecuteReader();
                             reader.Read();
-                            if (reader.GetInt32(0) != 0)
+                            if (reader.GetInt32(0) == 1)
+                                premium = true;
+                            reader.Close();
+                            cmd = new SQLiteCommand("select state from items where id=" + parameters[0], adatb.GetConnection());                            
+                            reader = cmd.ExecuteReader();
+                            reader.Read();
+                            if (reader.GetInt32(0) == 3 || reader.GetInt32(0) == 2 || (reader.GetInt32(0)==1 && !premium))
                             {
                                 e.ReplyLine("placebid time");
                                 reader.Close();

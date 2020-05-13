@@ -739,3 +739,4 @@ C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\WindowsFormsApp1\obj\
 C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.comment.resources
 C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.forum.resources
 C:\Users\Barni\Documents\GitHub\RendszerfejlesztesBeadando\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Subscribe.resources
+C:\Users\takose\Documents\GitHub\RendszerfejlesztesBeadando\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Subscribe.resources
